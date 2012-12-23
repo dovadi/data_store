@@ -1,0 +1,8 @@
+Publish gem
+===========
+
+# git push
+# git tag -a 0.0.1 -m "Initial commit"
+# git push --tags
+# gem build data_store.gemspec 
+# gem push data_store-0.0.1.gem 

@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ['frank.oxener@gmail.com']
   gem.description   = %q{DataStore is designed to store real time data but still manage the growth of your dataset and still keeping historical data}
   gem.summary       = %q{DataStore for storing real time data}
-  gem.homepage      = ''
+  gem.homepage      = 'https://github.com/dovadi/data_store'
 
   gem.licenses    = ['MIT']
   gem.files         = `git ls-files`.split($\)
@@ -15,7 +15,4 @@ Gem::Specification.new do |gem|
   gem.name          = 'data_store'
   gem.require_paths = ['lib']
   gem.version       = DataStore::VERSION
-
-  gem.add_development_dependency 'shoulda'
-  gem.add_development_dependency 'rspec'
 end

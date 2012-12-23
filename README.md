@@ -1,5 +1,9 @@
 # DataStore
 
+<a href='http://travis-ci.org/dovadi/data_store'>
+![http://travis-ci.org/dovadi/data_store](https://secure.travis-ci.org/dovadi/data_store.png)
+</a>
+
 DataStore is designed to store real time data and manage the growth of your dataset by deciding the timeperiod of your historical data
 
 ## Installation

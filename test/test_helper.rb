@@ -8,7 +8,7 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 require 'test/unit'
-require 'mocha/setup'
+require 'mocha'
 require 'shoulda'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))

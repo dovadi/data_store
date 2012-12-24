@@ -1,5 +1,8 @@
+require 'rubygems'
+require 'sequel'
 require 'data_store/version'
 require 'data_store/configuration'
+require 'data_store/base'
 
 module DataStore
 
@@ -8,7 +11,7 @@ module DataStore
     attr_writer :configuration
 
   class << self
-     
+
     # Call this method to modify defaults in your initializers.
     #
     # @example

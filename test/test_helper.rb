@@ -8,7 +8,7 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 require 'test/unit'
-require 'mocha'
+require 'mocha/setup'
 require 'shoulda'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
@@ -16,5 +16,13 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'data_store'
 
 class Test::Unit::TestCase
+
+  def drop_data_stores
+    database = Sequel.sqlite('data_store.db')
+    begin
+      database.drop_table :data_stores
+    rescue Sequel::DatabaseError  
+    end
+  end
 
 end

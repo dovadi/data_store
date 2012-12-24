@@ -9,7 +9,7 @@ class DataStoreBaseTest < Test::Unit::TestCase
         config.database = :sqlite3
       end
       drop_data_stores
-      @database = Sequel.sqlite('data_store.db')
+      @database = Sequel.sqlite(File.expand_path('../../db/data_store.db', __FILE__))
     end
 
     should 'be valid' do

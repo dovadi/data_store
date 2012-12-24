@@ -31,7 +31,7 @@ module DataStore
       @database ||= begin
         case DataStore.configuration.database
         when :sqlite3
-          Sequel.sqlite('data_store.db')
+          Sequel.sqlite(File.expand_path('../../../db/data_store.db', __FILE__))
         end
       end
     end

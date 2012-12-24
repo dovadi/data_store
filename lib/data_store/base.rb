@@ -23,7 +23,8 @@ module DataStore
       begin
         database[:data_stores] if database[:data_stores].count
       rescue Sequel::DatabaseError
-        create_data_stores!
+        DataStore.data_stores_migration.apply(database, :up)
+        database[:data_stores]
       end
     end
 
@@ -34,20 +35,6 @@ module DataStore
           Sequel.sqlite(File.expand_path('../../../db/data_store.db', __FILE__))
         end
       end
-    end
-
-    def self.create_data_stores!
-      database.create_table(:data_stores) do
-        primary_key :id
-        Integer     :identifier, unique: true, null: false
-        String      :name, null: false
-        String      :type, null: false
-        String      :description
-        DateTime    :created_at
-        DateTime    :updated_at
-        index       :identifier
-      end
-      database[:data_stores]
     end
 
   end

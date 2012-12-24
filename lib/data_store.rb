@@ -3,6 +3,9 @@ require 'sequel'
 require 'data_store/version'
 require 'data_store/configuration'
 require 'data_store/base'
+require 'data_store/data_stores_migration'
+
+Sequel.extension :migration
 
 module DataStore
 

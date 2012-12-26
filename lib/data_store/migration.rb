@@ -1,6 +1,7 @@
 module DataStore
 
-  def self.data_stores_migration
+  # Definition of the data_stores table
+  def self.migration
     Sequel.migration do
       change do
         create_table(:data_stores) do

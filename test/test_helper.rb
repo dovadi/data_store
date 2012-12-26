@@ -13,16 +13,9 @@ require 'shoulda'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
+
 require 'data_store'
 
 class Test::Unit::TestCase
-
-  def drop_data_stores
-    database = DataStore::Base.database
-    begin
-      database.drop_table :data_stores
-    rescue Sequel::DatabaseError  
-    end
-  end
 
 end

@@ -1,38 +1,42 @@
-require 'rubygems'
 require 'sequel'
 require 'yaml'
 require 'data_store/version'
-require 'data_store/configuration'
 require 'data_store/base'
-require 'data_store/data_stores_migration'
+require 'data_store/configuration'
+require 'data_store/migration'
 
 Sequel.extension :migration
+Sequel::Model.plugin :timestamps, :force=>true, :update_on_create=>true
 
 module DataStore
 
-  # A DataStore configuration object.
-  # @see Airbrake::Configuration.
-  attr_writer :configuration
-
   class << self
 
-    # Call this method to modify defaults in your initializers.
+    # Configure DataStore
     #
-    # @example
-    #   DataStore.configure do |config|
-    #     config.prefix   = 'data_store'
-    #     config.database = :mysql
+    # Example
+    #   DataStore.configure |config|
+    #     config.prefix   = 'data_store_'
+    #     config.database = :postgres
     #   end
     def configure
       yield(configuration)
     end
 
-    # The configuration object.
-    # @see DataStore.configure
+    # The configuration object. See {Configuration}
     def configuration
       @configuration ||= Configuration.new
+    end
+
+    # Return a DataStore class enriched with Sequel::Model behaviour
+    def model(dataset = [])
+      @model ||= begin
+        dataset = DataStore::Base.new.dataset if dataset.empty?
+        Class.new(Sequel::Model(dataset))
+      end
     end
 
   end
 
 end
+

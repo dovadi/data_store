@@ -24,7 +24,7 @@ module DataStore
 
     def initialize
       @prefix             = 'data_store_'
-      @database           = :postgresql
+      @database           = :postgres
       @compression_factor = 5
       @frequency          = 10
       @maximum_datapoints = 800

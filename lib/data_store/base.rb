@@ -2,34 +2,52 @@ module DataStore
 
   class Base
 
-    # Create a record in the data_stores table with the following attributes
+    # Create the data_stores table with the following attributes
     #
     # * primary_key :id
     # * Integer     :identifier, unique: true, null: false
     # * String      :name, null: false
     # * String      :type, null: false
     # * String      :description
-    def self.create(attributes)
-      dataset.insert(attributes.merge(created_at: Time.now, updated_at: Time.now))
-      dataset.order(:created_at).last
+    # * DateTime    :created_at
+    # * DateTime    :updated_at
+    #
+    def create_table!
+      begin
+        DataStore.migration.apply(database, :up)
+      rescue Sequel::DatabaseError
+      end
     end
 
-    private
+    # Drop data_stores table and recreate it
+    def reset!
+      drop_table!
+      create_table!
+    end
 
-    def self.dataset
-      begin
-        database[:data_stores] if database[:data_stores].count
-      rescue Sequel::DatabaseError
-        DataStore.data_stores_migration.apply(database, :up)
+    # Return the dataset associated with data_stores
+    def dataset
+      @dataset ||= begin
+        create_table!
         database[:data_stores]
       end
     end
 
-    def self.database
-      @database ||= Sequel.connect(database_configuration)
+    # Return the database object to which its connected.
+    def database
+      @database ||= Sequel.connect(database_settings)
     end
 
-    def self.database_configuration
+    private
+
+    def drop_table!
+      begin
+        database.drop_table :data_stores
+      rescue Sequel::DatabaseError
+      end
+    end
+
+    def database_settings
       config_file = File.expand_path('../../../config/database.yml', __FILE__)
       YAML.load(File.open(config_file))[DataStore.configuration.database.to_s]
     end

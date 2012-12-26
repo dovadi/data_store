@@ -9,12 +9,9 @@ module DataStore
     # * String      :name, null: false
     # * String      :type, null: false
     # * String      :description
-    # * DateTime    :created_at
-    # * DateTime    :updated_at
-    # * index       :identifier
     def self.create(attributes)
       dataset.insert(attributes.merge(created_at: Time.now, updated_at: Time.now))
-      dataset.order('created_at DESC').last
+      dataset.order(:created_at).last
     end
 
     private
@@ -29,12 +26,12 @@ module DataStore
     end
 
     def self.database
-      @database ||= begin
-        case DataStore.configuration.database
-        when :sqlite3
-          Sequel.sqlite(File.expand_path('../../../db/data_store.db', __FILE__))
-        end
-      end
+      @database ||= Sequel.connect(database_configuration)
+    end
+
+    def self.database_configuration
+      config_file = File.expand_path('../../../config/database.yml', __FILE__)
+      YAML.load(File.open(config_file))[DataStore.configuration.database.to_s]
     end
 
   end

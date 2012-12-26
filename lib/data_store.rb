@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sequel'
+require 'yaml'
 require 'data_store/version'
 require 'data_store/configuration'
 require 'data_store/base'
@@ -9,9 +10,9 @@ Sequel.extension :migration
 
 module DataStore
 
-    # A DataStore configuration object.
-    # @see Airbrake::Configuration.
-    attr_writer :configuration
+  # A DataStore configuration object.
+  # @see Airbrake::Configuration.
+  attr_writer :configuration
 
   class << self
 

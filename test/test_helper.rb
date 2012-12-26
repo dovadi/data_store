@@ -18,7 +18,7 @@ require 'data_store'
 class Test::Unit::TestCase
 
   def drop_data_stores
-    database = Sequel.sqlite(File.expand_path('../../db/data_store.db', __FILE__))
+    database = DataStore::Base.database
     begin
       database.drop_table :data_stores
     rescue Sequel::DatabaseError  

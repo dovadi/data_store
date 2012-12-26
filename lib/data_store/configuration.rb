@@ -22,13 +22,17 @@ module DataStore
     # The data type in which the value is stored
     attr_accessor :data_type
 
+    #The location of the database.yml file
+    attr_accessor :database_config_file
+
     def initialize
-      @prefix             = 'data_store_'
-      @database           = :postgres
-      @compression_factor = 5
-      @frequency          = 10
-      @maximum_datapoints = 800
-      @data_type          = :float
+      @prefix               = 'data_store_'
+      @database             = :postgres
+      @compression_factor   = 5
+      @frequency            = 10
+      @maximum_datapoints   = 800
+      @data_type            = :float
+      @database_config_file = File.expand_path('../../../config/database.yml', __FILE__)
     end
 
   end

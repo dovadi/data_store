@@ -4,19 +4,19 @@ class BaseTest < Test::Unit::TestCase
 
   context 'DataStore::Base connection with database' do
 
-    should 'return the posgres database if so defined' do
+    should 'return the postgres database if so defined' do
       DataStore.configuration.database = :postgres
-      assert_equal  'Sequel::Postgres::Database', DataStore::Base.new.database.class.to_s
+      assert_equal 'Sequel::Postgres::Database', DataStore::Base.new.database.class.to_s
     end
 
     should 'return the mysql database if so defined' do
       DataStore.configuration.database = :mysql
-      assert_equal  'Sequel::Mysql2::Database', DataStore::Base.new.database.class.to_s
+      assert_equal 'Sequel::Mysql2::Database', DataStore::Base.new.database.class.to_s
     end
 
     should 'return the sqlite database if so defined' do
       DataStore.configuration.database = :sqlite
-      assert_equal  'Sequel::SQLite::Database', DataStore::Base.new.database.class.to_s
+      assert_equal 'Sequel::SQLite::Database', DataStore::Base.new.database.class.to_s
    end
 
     should 'trigger the migration to create the database table' do
@@ -26,7 +26,7 @@ class BaseTest < Test::Unit::TestCase
       DataStore::Base.new.create_table!
     end
 
-    should 'drop and recreate table' do
+    should 'reset by dropping and recreating the database table' do
       base = DataStore::Base.new
       migration = mock
       base.expects(:drop_table!)
@@ -44,7 +44,7 @@ class BaseTest < Test::Unit::TestCase
       DataStore::Base.new.reset!
     end
 
-    context 'with behaviour enriched by Sequel::Model' do
+    context 'with added behaviour through Sequel::Model' do
 
       setup do
         @record = DataStore.model.create(identifier:  1,

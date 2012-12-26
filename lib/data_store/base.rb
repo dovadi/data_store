@@ -48,7 +48,7 @@ module DataStore
     end
 
     def database_settings
-      config_file = File.expand_path('../../../config/database.yml', __FILE__)
+      config_file = DataStore.configuration.database_config_file
       YAML.load(File.open(config_file))[DataStore.configuration.database.to_s]
     end
 

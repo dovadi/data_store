@@ -3,6 +3,7 @@
   * Readme driven development
   * Configuration of DataStore with Base class for database connection and dataset definition
   * Introduction of DataStore.model enriched behaviour with the use of Sequel::Model
+  * introduction of the DataStore::Stack to push datapoints
 
 ##0.0.1
 

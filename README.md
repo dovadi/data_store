@@ -31,12 +31,11 @@ Or install it yourself as:
       config.data_type           = :float
       config.frequency           = 10
       config.maximum_datapoints  = 800
-      config.keep_details        = 1.year
     end
 
 ### Creation of a DataStore
 
-    DataStore.create(:identifier => 1, :type => :gauge, :name => 'Electra', :description => 'Actual usage of electra in the home')
+    DataStore.model.create(identifier: 1, type: 'gauge', name: 'Electra', description: 'Actual usage of electra in the home')
 
 This will result in the creation of 2 tables, one for the original data with the following structure named 'data_store_1:
 
@@ -46,7 +45,7 @@ This will result in the creation of 2 tables, one for the original data with the
 and one for the average historical data with the following structure named 'data_store_1_history:
 
     value:      float
-    created_at: timestamp
+    created:    timestamp (float)
     timeslot:   integer
 
 and a record to the main data_stores table with the corresponding field names
@@ -62,13 +61,13 @@ and a record to the main data_stores table with the corresponding field names
 
 ### Add a datapoint
 
-    DataStore.new(1).store(120.34)
-    DataStore.new(1).store(123.09)
-    DataStore.new(1).store(125.01)
+    DataStore::Stack.new(1).push(120.34)
+    DataStore:Stack.new(1).push(123.09)
+    DataStore:Stack.new(1).push(125.01)
 
 ### Fetching datapoints
 
-    DataStore.new(1).fetch(:from => (Time.zone.now - 1.hour).to_i, :till => Time.zone.now.to_i)
+    DataStore::Stack.new(1).fetch(:from => (Time.now.utc - 3600).to_f, :till => Time.now.utc.to_f)
 
 will result in an array of maximum 800 data points. An data point consists of an unix timestamp (UTC) and a value
 
@@ -76,36 +75,28 @@ will result in an array of maximum 800 data points. An data point consists of an
 
 ### Getting meta data of your data set
 
-    DataStore.new(1).info
+    DataStore::Stack.new(1).parent
 
-will return the following information
-
-    :name => 'Electra'
-    :description => 'Actual usage of electra in the home'
-
-    :type => :gauge
-    :data_type => :float
-    :maximum_data_points => 800
-
+will return the correspondinf record from the general data_stores table
 
 or more specific count of the number of records
 
-    DataStore.new(1).count #=> 1249336
+    DataStore::Stack.new(1).count #=> 1249336
     DataStore.new(1).history_count
 
 last record
 
-    DataStore.new(1).last
+    DataStore::Stack.new(1).pop
 
 results
 
-    [1352668356, 120.34]
+    #< @values={:id=>2, :value=>120.38, :created=>1356621436.67489}>
 
 ### Managing the size of your data set
 
 ### Export a data store
 
-    DataStore.new(1).export
+    DDataStore::Stack.new(1).export
     
 will result in a csv file with the name data_store_1.csv
 
@@ -116,3 +107,9 @@ will result in a csv file with the name data_store_1.csv
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Copyright
+
+Copyright (c) 2013 Agile Dovadi BV - Frank Oxener.
+
+See LICENSE.txt for further details.

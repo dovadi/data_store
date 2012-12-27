@@ -18,4 +18,16 @@ module DataStore
     end
   end
 
+  def self.create_stack(table_name)
+    Sequel.migration do
+      change do
+        create_table(table_name) do
+          primary_key :id
+          Float       :value
+          DateTime    :created_at
+        end
+      end
+    end
+  end
+
 end

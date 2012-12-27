@@ -4,6 +4,7 @@ require 'data_store/version'
 require 'data_store/connector'
 require 'data_store/configuration'
 require 'data_store/migration'
+require 'data_store/stack'
 
 Sequel.extension :migration
 Sequel::Model.plugin :timestamps, :force=>true, :update_on_create=>true

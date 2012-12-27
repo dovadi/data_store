@@ -26,7 +26,7 @@ module DataStore
     attr_accessor :database_config_file
 
     def initialize
-      @prefix               = 'data_store_'
+      @prefix               = 'ds_'
       @database             = :postgres
       @compression_factor   = 5
       @frequency            = 10

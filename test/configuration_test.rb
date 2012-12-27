@@ -5,7 +5,7 @@ class ConfigurationTest < Test::Unit::TestCase
   context 'Configuration' do
 
     should "provide default values" do
-      assert_config_default :prefix,             'data_store_'
+      assert_config_default :prefix,             'ds_'
       assert_config_default :database,           :postgres
       assert_config_default :compression_factor, 5
       assert_config_default :frequency,          10

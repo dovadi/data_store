@@ -1,6 +1,6 @@
 module DataStore
 
-  class Base
+  class Connector
 
     # Create the data_stores table with the following attributes
     #

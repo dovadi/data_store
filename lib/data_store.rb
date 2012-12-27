@@ -1,7 +1,7 @@
 require 'sequel'
 require 'yaml'
 require 'data_store/version'
-require 'data_store/base'
+require 'data_store/connector'
 require 'data_store/configuration'
 require 'data_store/migration'
 
@@ -21,6 +21,7 @@ module DataStore
     #   end
     def configure
       yield(configuration)
+      DataStore::Connector.new.create_table!
     end
 
     # The configuration object. See {Configuration}
@@ -31,7 +32,7 @@ module DataStore
     # Return a DataStore class enriched with Sequel::Model behaviour
     def model(dataset = [])
       @model ||= begin
-        dataset = DataStore::Base.new.dataset if dataset.empty?
+        dataset = DataStore::Connector.new.dataset if dataset.empty?
         Class.new(Sequel::Model(dataset))
       end
     end

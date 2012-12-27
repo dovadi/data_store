@@ -3,7 +3,7 @@ require 'yaml'
 require 'data_store/version'
 require 'data_store/connector'
 require 'data_store/configuration'
-require 'data_store/migration'
+require 'data_store/definitions'
 require 'data_store/stack'
 
 Sequel.extension :migration

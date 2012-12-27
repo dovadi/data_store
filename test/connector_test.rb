@@ -25,7 +25,7 @@ class ConnectorTest < Test::Unit::TestCase
 
     should 'trigger the migration to create the database table' do
       migration = mock
-      DataStore.expects(:migration).returns(migration)
+      DataStore.expects(:create_data_stores).returns(migration)
       migration.expects(:apply)
       @connector.create_table!
     end
@@ -33,7 +33,7 @@ class ConnectorTest < Test::Unit::TestCase
     should 'reset by dropping and recreating the database table' do
       migration = mock
       @connector.expects(:drop_table!)
-      DataStore.expects(:migration).returns(migration)
+      DataStore.expects(:create_data_stores).returns(migration)
       migration.expects(:apply)
       @connector.reset!
     end

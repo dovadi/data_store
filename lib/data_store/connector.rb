@@ -13,7 +13,7 @@ module DataStore
     # * DateTime    :updated_at
     #
     def create_table!
-      DataStore.migration.apply(database, :up)
+      DataStore.create_data_stores.apply(database, :up)
       disconnect
     rescue Sequel::DatabaseError
     end
@@ -45,7 +45,7 @@ module DataStore
     private
  
     def drop_table!
-      DataStore.migration.apply(database, :down)
+      DataStore.create_data_stores.apply(database, :down)
       disconnect
     rescue Sequel::DatabaseError
     end

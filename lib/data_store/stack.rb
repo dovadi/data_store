@@ -4,43 +4,52 @@ module DataStore
 
     attr_reader :identifier
 
+    # Initialize the stack by passsing an identifier
     def initialize(identifier)
       @identifier = identifier
     end
 
+    # Return a the corresponding parent class, i.e the settings from the data_stores table
     def parent
       @parent ||= DataStore.model.find(identifier: identifier)
     end
 
-    # Return a Stack class enriched with Sequel::Model behaviour
+    # Return a Stack object enriched with Sequel::Model behaviour
     def model
       @model ||= Class.new(Sequel::Model(dataset))
     end
 
+    # Push a new datapoint on the stack
     def push(value)
-      dataset << {value: value, created_at: Time.now.utc}
+      dataset << {value: value, created: Time.now.utc.to_f}
     end
 
+    # Pop the most recent datapoint from the stack
     def pop
-      model.order(:created_at).last
+      model.order(:created).last
     end
 
+    # Return the total number of datapoints in the stack
     def count
       dataset.count
     end
 
+    # Create the database tables which the stack usesd for storing the datapoints
     def create!
       begin
         DataStore.create_stack(stack_name).apply(database, :up)
+        disconnect
       rescue Sequel::DatabaseError
       end
     end
 
+    # Drop all corresponding database tables and recreate them
     def reset!
       drop!
       create!
     end
 
+    # Return the corresponding dataset with the datapoitns
     def dataset
       database[stack_name]
     end
@@ -48,14 +57,18 @@ module DataStore
     private
 
     def drop!
-      begin
-        database.drop_table stack_name
-      rescue Sequel::DatabaseError
-      end
+      DataStore.create_stack(stack_name).apply(database, :down)
+      disconnect
+    rescue Sequel::DatabaseError
+    end
+
+    def disconnect
+      database.disconnect
+      @database = nil
     end
 
     def database
-      DataStore::Connector.new.database
+      @database ||= DataStore::Connector.new.database
     end
 
     def stack_name

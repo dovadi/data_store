@@ -24,7 +24,7 @@ module DataStore
         create_table(table_name) do
           primary_key :id
           Float       :value
-          DateTime    :created_at
+          Float       :created
         end
       end
     end

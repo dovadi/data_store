@@ -5,17 +5,14 @@ class StackTest < Test::Unit::TestCase
   context 'DataStore::Stack general' do
 
     setup do
-      DataStore.configuration.database = ENV['DB'] || :sqlite
+      DataStore.configuration.database = ENV['DB'] || :postgres
       DataStore::Connector.new.reset!
       @record = DataStore.model.create(identifier:  1,
                                        type:        'gauge', 
                                        name:        'Electra',
                                        description: 'Actual usage of electra in the home')
       @stack = DataStore::Stack.new(1)
-    end
-
-    should 'be valid' do
-      assert @stack
+      @stack.reset!
     end
 
     should 'return the value of the identifier' do
@@ -59,7 +56,9 @@ class StackTest < Test::Unit::TestCase
       end
 
       should 'create the stack' do
-        assert_equal 0, DataStore::Connector.new.database[:ds_1].count
+        connector = DataStore::Connector.new
+        assert_equal 0, connector.database[:ds_1].count
+        connector.disconnect
       end
 
       should 'return corresponding model' do

@@ -22,7 +22,9 @@ module DataStore
     #   end
     def configure
       yield(configuration)
-      DataStore::Connector.new.create_table!
+      connector = DataStore::Connector.new
+      connector.create_table!
+      connector.database.disconnect
     end
 
     # The configuration object. See {Configuration}
@@ -32,10 +34,12 @@ module DataStore
 
     # Return a DataStore class enriched with Sequel::Model behaviour
     def model(dataset = [])
-      @model ||= begin
-        dataset = DataStore::Connector.new.dataset if dataset.empty?
-        Class.new(Sequel::Model(dataset))
+      if dataset.empty?
+        connector = DataStore::Connector.new
+        dataset = connector.dataset
+        connector.disconnect
       end
+      Class.new(Sequel::Model(dataset))
     end
 
   end

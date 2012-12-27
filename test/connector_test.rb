@@ -4,35 +4,42 @@ class ConnectorTest < Test::Unit::TestCase
 
   context 'DataStore::Connector connection with database' do
 
+    setup do
+      @connector = DataStore::Connector.new
+    end
+
     should 'return the postgres database if so defined' do
       DataStore.configuration.database = :postgres
-      assert_equal 'Sequel::Postgres::Database', DataStore::Connector.new.database.class.to_s
+      assert_equal 'Sequel::Postgres::Database', @connector.database.class.to_s
     end
 
     should 'return the mysql database if so defined' do
       DataStore.configuration.database = :mysql
-      assert_equal 'Sequel::Mysql2::Database', DataStore::Connector.new.database.class.to_s
+      assert_equal 'Sequel::Mysql2::Database', @connector.database.class.to_s
     end
 
     should 'return the sqlite database if so defined' do
       DataStore.configuration.database = :sqlite
-      assert_equal 'Sequel::SQLite::Database', DataStore::Connector.new.database.class.to_s
+      assert_equal 'Sequel::SQLite::Database', @connector.database.class.to_s
    end
 
     should 'trigger the migration to create the database table' do
       migration = mock
       DataStore.expects(:migration).returns(migration)
       migration.expects(:apply)
-      DataStore::Connector.new.create_table!
+      @connector.create_table!
     end
 
     should 'reset by dropping and recreating the database table' do
-      base = DataStore::Connector.new
       migration = mock
-      base.expects(:drop_table!)
+      @connector.expects(:drop_table!)
       DataStore.expects(:migration).returns(migration)
       migration.expects(:apply)
-      base.reset!
+      @connector.reset!
+    end
+
+    teardown do
+      @connector.disconnect
     end
 
   end
@@ -40,7 +47,7 @@ class ConnectorTest < Test::Unit::TestCase
   context 'DataStore Model' do
 
     setup do
-      DataStore.configuration.database = ENV['DB'] || :sqlite
+      DataStore.configuration.database = ENV['DB'] || :postgres
       DataStore::Connector.new.reset!
     end
 

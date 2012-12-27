@@ -5,9 +5,12 @@ class StackTest < Test::Unit::TestCase
   context 'DataStore::Stack general' do
 
     setup do
-      DataStore.configuration.database = ENV['DB'] || :postgres
+      DataStore.configure do |config|
+        config.database = ENV['DB'] || :postgres
+      end
       DataStore::Connector.new.reset!
-      @record = DataStore.model.create(identifier:  1,
+
+      @record = DataStore::Base.create(identifier:  1,
                                        type:        'gauge', 
                                        name:        'Electra',
                                        description: 'Actual usage of electra in the home')
@@ -40,10 +43,6 @@ class StackTest < Test::Unit::TestCase
 
     context 'adding datapoints' do
 
-      setup do
-        @stack.reset!
-      end
-
       should 'push a datapoint to the stack' do
         @stack.push(120.34)
         assert_equal 1, @stack.count
@@ -68,6 +67,11 @@ class StackTest < Test::Unit::TestCase
 
     end
 
+    teardown do
+      @stack.disconnect
+    end
+    
   end
+
 
 end

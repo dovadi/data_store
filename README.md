@@ -35,7 +35,7 @@ Or install it yourself as:
 
 ### Creation of a DataStore
 
-    DataStore.model.create(identifier: 1, type: 'gauge', name: 'Electra', description: 'Actual usage of electra in the home')
+    DataStore::Base.create(identifier: 1, type: 'gauge', name: 'Electra', description: 'Actual usage of electra in the home')
 
 This will result in the creation of 2 tables, one for the original data with the following structure named 'data_store_1:
 

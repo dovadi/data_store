@@ -9,8 +9,24 @@ require 'data_store/stack'
 Sequel.extension :migration
 Sequel::Model.plugin :timestamps, :force=>true, :update_on_create=>true
 
+module Kernel
+  def suppress_warnings
+    original_verbosity = $VERBOSE
+    $VERBOSE = nil
+    result = yield
+    $VERBOSE = original_verbosity
+    return result
+  end
+end
+
 module DataStore
 
+  # Base class will be redefined during configure
+  # In order to assign Sequel::Model behaviour to it
+  # with the correctly defined (or configured) database connector
+  class Base
+  end
+    
   class << self
 
     # Configure DataStore
@@ -24,6 +40,7 @@ module DataStore
       yield(configuration)
       connector = DataStore::Connector.new
       connector.create_table!
+      suppress_warnings { self.const_set(:Base, Class.new(Sequel::Model(connector.dataset)))}
       connector.database.disconnect
     end
 
@@ -32,17 +49,6 @@ module DataStore
       @configuration ||= Configuration.new
     end
 
-    # Return a DataStore class enriched with Sequel::Model behaviour
-    def model(dataset = [])
-      if dataset.empty?
-        connector = DataStore::Connector.new
-        dataset = connector.dataset
-        connector.disconnect
-      end
-      Class.new(Sequel::Model(dataset))
-    end
-
   end
 
 end
-

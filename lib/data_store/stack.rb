@@ -11,7 +11,7 @@ module DataStore
 
     # Return a the corresponding parent class, i.e the settings from the data_stores table
     def parent
-      @parent ||= DataStore.model.find(identifier: identifier)
+      @parent ||= DataStore::Base.find(identifier: identifier)
     end
 
     # Return a Stack object enriched with Sequel::Model behaviour
@@ -54,17 +54,17 @@ module DataStore
       database[stack_name]
     end
 
+    def disconnect
+      database.disconnect
+      @database = nil
+    end
+
     private
 
     def drop!
       DataStore.create_stack(stack_name).apply(database, :down)
       disconnect
     rescue Sequel::DatabaseError
-    end
-
-    def disconnect
-      database.disconnect
-      @database = nil
     end
 
     def database

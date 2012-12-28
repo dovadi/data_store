@@ -63,12 +63,11 @@ module DataStore
 
     def drop!
       DataStore.create_stack(stack_name).apply(database, :down)
-      disconnect
     rescue Sequel::DatabaseError
     end
 
     def database
-      @database ||= DataStore::Connector.new.database
+      @database ||= DataStore::Base.db
     end
 
     def stack_name

@@ -67,10 +67,6 @@ class StackTest < Test::Unit::TestCase
 
     end
 
-    teardown do
-      @stack.disconnect
-    end
-    
   end
 
 

@@ -29,11 +29,11 @@ class DataStoreTest < Test::Unit::TestCase
     context 'with added behaviour through Sequel::Model' do
 
       setup do
-        @record = DataStore::Base.create(identifier:  1,
-                                         type:        'gauge', 
-                                         name:        'Electra',
-                                         description: 'Actual usage of electra in the home',
-                                         schema:       [5,4,3])
+        @record = DataStore::Base.create(identifier:         1,
+                                         type:               'gauge', 
+                                         name:               'Electra',
+                                         description:        'Actual usage of electra in the home',
+                                         compression_schema: [5,4,3])
       end
 
       should 'be valid' do
@@ -45,11 +45,12 @@ class DataStoreTest < Test::Unit::TestCase
       end
 
       should 'return its attibutes' do
-        assert_equal 1, @record.identifier
-        assert_equal 'gauge', @record.type
-        assert_equal 'Electra', @record.name
-        assert_equal 'Actual usage of electra in the home', @record.description
-        assert_equal [5,4,3], @record.schema
+        record = DataStore::Base.order(:created_at).last
+        assert_equal 1, record.identifier
+        assert_equal 'gauge', record.type
+        assert_equal 'Electra', record.name
+        assert_equal 'Actual usage of electra in the home', record.description
+        assert_equal [5,4,3], @record.compression_schema
       end
 
       should 'return default values if not set' do

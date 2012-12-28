@@ -56,13 +56,23 @@ module DataStore
 
     def redefine_base_class(dataset)
       suppress_warnings { self.const_set(:Base, Class.new(Sequel::Model(dataset)))}
-      Base.plugin :serialization, :marshal, :schema
-      Base.plugin :hook_class_methods
+      set_default_values
+      convert_compression_schema_string_into_array
+     end
+
+    def set_default_values
       Base.send(:define_method, :before_save) do
-        ['schema', 'frequency', 'maximum_datapoints', 'data_type'].each do |variable|
-          value    = DataStore.configuration.send(variable)
+        ['compression_schema', 'frequency', 'maximum_datapoints', 'data_type'].each do |variable|
+          value = DataStore.configuration.send(variable)
           self.send(variable+ '=', value) if self.send(variable).nil?
         end
+      end
+    end
+
+    def convert_compression_schema_string_into_array
+      Base.send(:define_method, :compression_schema) do
+        value = self.values[:compression_schema]
+        eval(value) if value.is_a?(String) #convert string into array
       end
     end
 

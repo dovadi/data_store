@@ -11,7 +11,7 @@ module DataStore
           String      :type, null: false
           String      :description
           String      :data_type
-          String      :schema
+          String      :compression_schema
           Integer     :frequency
           Integer     :maximum_datapoints
           DateTime    :created_at

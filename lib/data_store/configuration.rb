@@ -10,7 +10,7 @@ module DataStore
     attr_accessor :database
 
     # The schema is the way avarages of the datapoints is calculated/
-    attr_accessor :schema
+    attr_accessor :compression_schema
 
     # The frequency tells how often data entry is done.
     # A frequency of 10 means a data entry once every 10 seconds.
@@ -28,7 +28,7 @@ module DataStore
     def initialize
       @prefix               = 'ds_'
       @database             = :postgres
-      @schema               = [6,5,3,4,4,3]
+      @compression_schema   = [6,5,3,4,4,3]
       @frequency            = 10
       @maximum_datapoints   = 800
       @data_type            = :float

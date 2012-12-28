@@ -38,7 +38,6 @@ module DataStore
     def create!
       begin
         DataStore.create_stack(stack_name).apply(database, :up)
-        disconnect
       rescue Sequel::DatabaseError
       end
     end
@@ -52,11 +51,6 @@ module DataStore
     # Return the corresponding dataset with the datapoitns
     def dataset
       database[stack_name]
-    end
-
-    def disconnect
-      database.disconnect
-      @database = nil
     end
 
     private

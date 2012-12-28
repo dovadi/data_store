@@ -38,10 +38,6 @@ class ConnectorTest < Test::Unit::TestCase
       @connector.reset!
     end
 
-    teardown do
-      @connector.disconnect
-    end
-
   end
 
 end

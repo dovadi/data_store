@@ -55,9 +55,7 @@ class StackTest < Test::Unit::TestCase
       end
 
       should 'create the stack' do
-        connector = DataStore::Connector.new
-        assert_equal 0, connector.database[:ds_1].count
-        connector.disconnect
+        assert_equal 0, DataStore::Base.db[:ds_1].count
       end
 
       should 'return corresponding model' do

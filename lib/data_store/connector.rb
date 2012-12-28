@@ -14,7 +14,6 @@ module DataStore
     #
     def create_table!
       DataStore.create_data_stores.apply(database, :up)
-      disconnect
     rescue Sequel::DatabaseError
     end
 
@@ -22,6 +21,7 @@ module DataStore
     def reset!
       drop_table!
       create_table!
+      disconnect
     end
 
     # Return the dataset associated with data_stores
@@ -46,7 +46,6 @@ module DataStore
  
     def drop_table!
       DataStore.create_data_stores.apply(database, :down)
-      disconnect
     rescue Sequel::DatabaseError
     end
 

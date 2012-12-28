@@ -2,15 +2,18 @@
 
 require 'sequel'
 require 'yaml'
+
+$: << File.expand_path('../', __FILE__)
+$: << File.expand_path('../data_store/', __FILE__)
+
+Sequel.extension :migration
+Sequel::Model.plugin :timestamps, :force=>true, :update_on_create=>true
+
 require 'data_store/version'
 require 'data_store/connector'
 require 'data_store/configuration'
 require 'data_store/definitions'
 require 'data_store/stack'
-
-Sequel.extension :migration
-Sequel::Model.plugin :timestamps, :force=>true, :update_on_create=>true
-
 
 module Kernel
   def suppress_warnings
@@ -41,10 +44,7 @@ module DataStore
     #   end
     def configure
       yield(configuration)
-      connector = DataStore::Connector.new
-      connector.create_table!
-      redefine_base_class(connector.dataset)
-      connector.database.disconnect
+      define_base_class
     end
 
     # The configuration object. See {Configuration}
@@ -54,26 +54,12 @@ module DataStore
 
     private
 
-    def redefine_base_class(dataset)
-      suppress_warnings { self.const_set(:Base, Class.new(Sequel::Model(dataset)))}
-      set_default_values
-      convert_compression_schema_string_into_array
-     end
-
-    def set_default_values
-      Base.send(:define_method, :before_save) do
-        ['compression_schema', 'frequency', 'maximum_datapoints', 'data_type'].each do |variable|
-          value = DataStore.configuration.send(variable)
-          self.send(variable+ '=', value) if self.send(variable).nil?
-        end
-      end
-    end
-
-    def convert_compression_schema_string_into_array
-      Base.send(:define_method, :compression_schema) do
-        value = self.values[:compression_schema]
-        eval(value) if value.is_a?(String) #convert string into array
-      end
+    def define_base_class
+      connector = DataStore::Connector.new
+      connector.create_table!
+      suppress_warnings { self.const_set(:Base, Class.new(Sequel::Model(connector.dataset)))}
+      load 'base.rb'
+      connector.database.disconnect
     end
 
   end

@@ -5,21 +5,23 @@ class ConfigurationTest < Test::Unit::TestCase
   context 'Configuration' do
 
     should "provide default values" do
-      assert_config_default :prefix,             'ds_'
-      assert_config_default :database,           :postgres
-      assert_config_default :compression_factor, 5
-      assert_config_default :frequency,          10
-      assert_config_default :maximum_datapoints, 800
-      assert_config_default :data_type,          :float
+      assert_config_default :prefix,               'ds_'
+      assert_config_default :database,             :postgres
+      assert_config_default :schema,               [6,5,3,4,4,3]
+      assert_config_default :frequency,            10
+      assert_config_default :maximum_datapoints,   800
+      assert_config_default :data_type,            :float
+      assert_config_default :database_config_file, File.expand_path('../../config/database.yml', __FILE__)
     end
 
     should "allow values to be overwritten" do
       assert_config_overridable :prefix
       assert_config_overridable :database
-      assert_config_overridable :compression_factor
+      assert_config_overridable :schema
       assert_config_overridable :frequency
       assert_config_overridable :maximum_datapoints
       assert_config_overridable :data_type
+      assert_config_overridable :database_config_file
     end
 
   end

@@ -21,7 +21,7 @@ class DataStoreTest < Test::Unit::TestCase
 
     setup do
       DataStore.configure do |config|
-        config.database = ENV['DB'] || :mysql
+        config.database = ENV['DB'] || :postgres
       end
       DataStore::Connector.new.reset!
     end
@@ -32,7 +32,10 @@ class DataStoreTest < Test::Unit::TestCase
         @record = DataStore::Base.create(identifier:  1,
                                          type:        'gauge', 
                                          name:        'Electra',
-                                         description: 'Actual usage of electra in the home')
+                                         description: 'Actual usage of electra in the home',
+                                         schema:       [6,5,3,4,4,3],
+                                         data_type:   'float',
+                                         frequency:    10)
       end
 
       should 'be valid' do

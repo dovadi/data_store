@@ -10,6 +10,9 @@ module DataStore
           String      :name, null: false
           String      :type, null: false
           String      :description
+          String      :data_type
+          String      :schema
+          Integer     :frequency
           DateTime    :created_at
           DateTime    :updated_at
           index       :identifier

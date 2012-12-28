@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'sequel'
 require 'yaml'
 require 'data_store/version'
@@ -8,6 +10,7 @@ require 'data_store/stack'
 
 Sequel.extension :migration
 Sequel::Model.plugin :timestamps, :force=>true, :update_on_create=>true
+
 
 module Kernel
   def suppress_warnings
@@ -41,6 +44,7 @@ module DataStore
       connector = DataStore::Connector.new
       connector.create_table!
       suppress_warnings { self.const_set(:Base, Class.new(Sequel::Model(connector.dataset)))}
+      Base.plugin :serialization, :marshal, :schema
       connector.database.disconnect
     end
 

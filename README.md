@@ -27,7 +27,7 @@ Or install it yourself as:
     DataStore.configure do |config|
       config.prefix              = 'data_store'
       config.database            = :mysql
-      config.compression_factor  = 5
+      config.schema              = [6,5,3,4,4,3]
       config.data_type           = :float
       config.frequency           = 10
       config.maximum_datapoints  = 800
@@ -53,7 +53,7 @@ and a record to the main data_stores table with the corresponding field names
     id
     name
     description
-    compression_factor
+    schema
     frequency
     maximum_datapoints
     keep_details

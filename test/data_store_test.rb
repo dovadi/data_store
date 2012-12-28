@@ -33,9 +33,7 @@ class DataStoreTest < Test::Unit::TestCase
                                          type:        'gauge', 
                                          name:        'Electra',
                                          description: 'Actual usage of electra in the home',
-                                         schema:       [6,5,3,4,4,3],
-                                         data_type:   'float',
-                                         frequency:    10)
+                                         schema:       [5,4,3])
       end
 
       should 'be valid' do
@@ -46,11 +44,18 @@ class DataStoreTest < Test::Unit::TestCase
         assert_equal 1, DataStore::Base.count
       end
 
-      should 'return all attibutes' do
+      should 'return its attibutes' do
         assert_equal 1, @record.identifier
         assert_equal 'gauge', @record.type
         assert_equal 'Electra', @record.name
         assert_equal 'Actual usage of electra in the home', @record.description
+        assert_equal [5,4,3], @record.schema
+      end
+
+      should 'return default values if not set' do
+        assert_equal 10, @record.frequency
+        assert_equal 'float', @record.data_type
+        assert_equal 800, @record.maximum_datapoints
       end
 
       should 'have timestamps' do

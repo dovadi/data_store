@@ -43,14 +43,27 @@ module DataStore
       yield(configuration)
       connector = DataStore::Connector.new
       connector.create_table!
-      suppress_warnings { self.const_set(:Base, Class.new(Sequel::Model(connector.dataset)))}
-      Base.plugin :serialization, :marshal, :schema
+      redefine_base_class(connector.dataset)
       connector.database.disconnect
     end
 
     # The configuration object. See {Configuration}
     def configuration
       @configuration ||= Configuration.new
+    end
+
+    private
+
+    def redefine_base_class(dataset)
+      suppress_warnings { self.const_set(:Base, Class.new(Sequel::Model(dataset)))}
+      Base.plugin :serialization, :marshal, :schema
+      Base.plugin :hook_class_methods
+      Base.send(:define_method, :before_save) do
+        ['schema', 'frequency', 'maximum_datapoints', 'data_type'].each do |variable|
+          value    = DataStore.configuration.send(variable)
+          self.send(variable+ '=', value) if self.send(variable).nil?
+        end
+      end
     end
 
   end

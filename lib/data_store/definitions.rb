@@ -13,6 +13,7 @@ module DataStore
           String      :data_type
           String      :schema
           Integer     :frequency
+          Integer     :maximum_datapoints
           DateTime    :created_at
           DateTime    :updated_at
           index       :identifier

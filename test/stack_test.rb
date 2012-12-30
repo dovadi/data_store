@@ -24,6 +24,7 @@ class StackTest < Test::Unit::TestCase
     end
 
     should 'return the corresponding parent record' do
+      assert_equal true, @stack.parent.is_a?(DataStore::Base)
       assert_equal 1, @stack.parent.identifier
     end
 

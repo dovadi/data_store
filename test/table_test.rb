@@ -1,8 +1,8 @@
 require File.expand_path '../test_helper', __FILE__
 
-class StackTest < Test::Unit::TestCase
+class TableTest < Test::Unit::TestCase
 
-  context 'DataStore::Stack general' do
+  context 'DataStore::table general' do
 
     setup do
       DataStore.configure do |config|
@@ -15,26 +15,26 @@ class StackTest < Test::Unit::TestCase
                                        name:        'Electra',
                                        description: 'Actual usage of electra in the home',
                                        compression_schema: [5,6,10])
-      @stack = DataStore::Stack.new(1)
-      @stack.reset!
+      @table = DataStore::Table.new(1)
+      @table.reset!
     end
 
     should 'return the value of the identifier' do
-      assert_equal 1, @stack.identifier
+      assert_equal 1, @table.identifier
     end
 
     should 'return the corresponding parent record' do
-      assert_equal true, @stack.parent.is_a?(DataStore::Base)
-      assert_equal 1, @stack.parent.identifier
+      assert_equal true, @table.parent.is_a?(DataStore::Base)
+      assert_equal 1, @table.parent.identifier
     end
 
-    should 'be able to reset the entire stack' do
-      @stack.expects(:migrate).with(:down)
-      @stack.expects(:migrate).with(:up)
-      @stack.reset!
+    should 'be able to reset the entire table' do
+      @table.expects(:migrate).with(:down)
+      @table.expects(:migrate).with(:up)
+      @table.reset!
     end
 
-    should 'have created the complete stack' do
+    should 'have created the complete table' do
       assert_equal 0, DataStore::Base.db[:ds_1].count
       assert_equal 0, DataStore::Base.db[:ds_1_5].count
       assert_equal 0, DataStore::Base.db[:ds_1_30].count
@@ -44,31 +44,31 @@ class StackTest < Test::Unit::TestCase
     context 'adding datapoints' do
 
       setup do
-        @stack.stubs(:calculate_average_values)
+        @table.stubs(:calculate_average_values)
       end
 
-      should 'push a datapoint to the stack' do
-        @stack.push(120.34)
-        assert_equal 1, @stack.count
+      should 'add a datapoint to the table' do
+        @table.add(120.34)
+        assert_equal 1, @table.count
       end
 
       should 'retunr the last datapoint' do
-        @stack.push(120.34)
-        @stack.push(120.38)
-        assert_equal 120.38, @stack.last.value
+        @table.add(120.34)
+        @table.add(120.38)
+        assert_equal 120.38, @table.last.value
       end
 
       should 'return corresponding model' do
-        @stack.push(123.45)
-        assert_equal 123.45, @stack.model.find(value: 123.45).value
+        @table.add(123.45)
+        assert_equal 123.45, @table.model.find(value: 123.45).value
       end
     end
 
-    should 'Trigger the average calculator after pushing a value' do
+    should 'Trigger the average calculator after adding a value' do
       calculator = mock
-      DataStore::AverageCalculator.expects(:new).with(@stack.identifier).returns(calculator)
+      DataStore::AverageCalculator.expects(:new).with(@table.identifier).returns(calculator)
       calculator.expects(:perform)
-      @stack.push(120.34)
+      @table.add(120.34)
     end
 
   end

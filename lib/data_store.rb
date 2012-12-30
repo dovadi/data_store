@@ -13,7 +13,7 @@ require 'data_store/version'
 require 'data_store/connector'
 require 'data_store/configuration'
 require 'data_store/definitions'
-require 'data_store/stack'
+require 'data_store/table'
 require 'data_store/average_calculator'
 
 module Kernel

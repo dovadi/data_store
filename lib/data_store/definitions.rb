@@ -22,7 +22,7 @@ module DataStore
     end
   end
 
-  def self.create_stack(table_name)
+  def self.create_table(table_name)
     Sequel.migration do
       change do
         create_table(table_name) do

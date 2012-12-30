@@ -61,13 +61,13 @@ and a record to the main data_stores table with the corresponding field names
 
 ### Add a datapoint
 
-    DataStore::Stack.new(1).push(120.34)
-    DataStore:Stack.new(1).push(123.09)
-    DataStore:Stack.new(1).push(125.01)
+    DataStore::Table.new(1).add(120.34)
+    DataStore:Table.new(1).add(123.09)
+    DataStore:Table.new(1).add(125.01)
 
 ### Fetching datapoints
 
-    DataStore::Stack.new(1).fetch(:from => (Time.now.utc - 3600).to_f, :till => Time.now.utc.to_f)
+    DataStore::Table.new(1).fetch(:from => (Time.now.utc - 3600).to_f, :till => Time.now.utc.to_f)
 
 will result in an array of maximum 800 data points. An data point consists of an unix timestamp (UTC) and a value
 
@@ -75,18 +75,18 @@ will result in an array of maximum 800 data points. An data point consists of an
 
 ### Getting meta data of your data set
 
-    DataStore::Stack.new(1).parent
+    DataStore::Table.new(1).parent
 
 will return the correspondinf record from the general data_stores table
 
 or more specific count of the number of records
 
-    DataStore::Stack.new(1).count #=> 1249336
+    DataStore::Table.new(1).count #=> 1249336
     DataStore.new(1).history_count
 
 last record
 
-    DataStore::Stack.new(1).pop
+    DataStore::Table.new(1).pop
 
 results
 
@@ -96,7 +96,7 @@ results
 
 ### Export a data store
 
-    DDataStore::Stack.new(1).export
+    DDataStore::Table.new(1).export
     
 will result in a csv file with the name data_store_1.csv
 

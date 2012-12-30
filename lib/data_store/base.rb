@@ -62,15 +62,16 @@ module DataStore
     end
 
     def migrate(direction = :up)
-      #Establish new connection to prevent mix up with associated db connection of the Base object
-      database = DataStore::Connector.new.database 
+      # Establish new connection to prevent mix up with associated db connection of the Base object
+      # Unless connected to a sqlite db, otherwise it is too time consuming
+      database = sqlite_db? ? db : DataStore::Connector.new.database
       table_names.each do |name|
         begin
           DataStore.create_table(name).apply(database, direction)
         rescue Sequel::DatabaseError
         end
       end
-      database.disconnect
+      database.disconnect unless sqlite_db?
     end
 
     def table_name
@@ -79,6 +80,10 @@ module DataStore
 
     def prefix
       DataStore.configuration.prefix
+    end
+
+    def sqlite_db?
+      DataStore.configuration.database.to_s == 'sqlite'
     end
 
   end

@@ -36,15 +36,12 @@ module DataStore
 
     # Create the database tables which the stack usesd for storing the datapoints
     def create!
-      begin
-        DataStore.create_stack(stack_name).apply(database, :up)
-      rescue Sequel::DatabaseError
-      end
+      migrate(:up)
     end
 
     # Drop all corresponding database tables and recreate them
     def reset!
-      drop!
+      migrate(:down)
       create!
     end
 
@@ -55,9 +52,23 @@ module DataStore
 
     private
 
-    def drop!
-      DataStore.create_stack(stack_name).apply(database, :down)
-    rescue Sequel::DatabaseError
+    def stack_table_names
+      names  = [stack_name]
+      factor = 1
+      parent.compression_schema.each do |compression|
+        factor = (factor * compression)
+        names << stack_name.to_s + '_' + factor.to_s
+      end
+      names
+    end
+
+    def migrate(direction = :up)
+      stack_table_names.each do |name|
+        begin
+          DataStore.create_stack(name).apply(database, direction)
+        rescue Sequel::DatabaseError
+        end
+      end
     end
 
     def database

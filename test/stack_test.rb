@@ -13,7 +13,8 @@ class StackTest < Test::Unit::TestCase
       @record = DataStore::Base.create(identifier:  1,
                                        type:        'gauge', 
                                        name:        'Electra',
-                                       description: 'Actual usage of electra in the home')
+                                       description: 'Actual usage of electra in the home',
+                                       compression_schema: [5,6,10])
       @stack = DataStore::Stack.new(1)
       @stack.reset!
     end
@@ -26,19 +27,17 @@ class StackTest < Test::Unit::TestCase
       assert_equal 1, @stack.parent.identifier
     end
 
-    should 'be able to create the stack' do
-      migration = mock
-      DataStore.expects(:create_stack).with(:ds_1).returns(migration)
-      migration.expects(:apply)
-      @stack.create!
+    should 'be able to reset the entire stack' do
+      @stack.expects(:migrate).with(:down)
+      @stack.expects(:migrate).with(:up)
+      @stack.reset!
     end
 
-    should 'be able to reset the entire stack' do
-      DataStore::Stack.any_instance.expects(:drop!)
-      migration = mock
-      DataStore.expects(:create_stack).with(:ds_1).returns(migration)
-      migration.expects(:apply)
-      @stack.reset!
+    should 'have created the complete stack' do
+      assert_equal 0, DataStore::Base.db[:ds_1].count
+      assert_equal 0, DataStore::Base.db[:ds_1_5].count
+      assert_equal 0, DataStore::Base.db[:ds_1_30].count
+      assert_equal 0, DataStore::Base.db[:ds_1_300].count
     end
 
     context 'adding datapoints' do
@@ -52,10 +51,6 @@ class StackTest < Test::Unit::TestCase
         @stack.push(120.34)
         @stack.push(120.38)
         assert_equal 120.38, @stack.pop.value
-      end
-
-      should 'create the stack' do
-        assert_equal 0, DataStore::Base.db[:ds_1].count
       end
 
       should 'return corresponding model' do

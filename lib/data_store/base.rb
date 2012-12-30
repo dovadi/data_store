@@ -12,6 +12,11 @@ module DataStore
       set_default_values  
     end
 
+    def after_create
+      drop_tables!
+      create_tables!
+    end
+
     # Convert serialized compression schema as a string back into the array object itself.
     # For example: "[5,4,3]" => [5,4,3]
     def compression_schema
@@ -30,6 +35,46 @@ module DataStore
         value = DataStore.configuration.send(variable)
         self.send(variable+ '=', value) if self.send(variable).nil?
       end
+    end
+
+    # Create the database tables which are used for storing the datapoints
+    def create_tables!
+      migrate(:up)
+    end
+
+    # Drop the database tables which are used for storing the datapoints
+    def drop_tables!
+      migrate(:down)
+    end
+
+    def table_names
+      names  = [table_name.to_s]
+      factor = 1
+      compression_schema.each do |compression|
+        factor = (factor * compression)
+        names << table_name.to_s + '_' + factor.to_s
+      end
+      names
+    end
+
+    def migrate(direction = :up)
+      #Establish new connection to prevent mix up with associated db connection of the Base object
+      database = DataStore::Connector.new.database 
+      table_names.each do |name|
+        begin
+          DataStore.create_table(name).apply(database, direction)
+        rescue Sequel::DatabaseError
+        end
+      end
+      database.disconnect
+    end
+
+    def table_name
+      (prefix + identifier.to_s).to_sym
+    end
+
+    def prefix
+      DataStore.configuration.prefix
     end
 
   end

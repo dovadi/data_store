@@ -16,7 +16,6 @@ class TableTest < Test::Unit::TestCase
                                        description: 'Actual usage of electra in the home',
                                        compression_schema: [5,6,10])
       @table = DataStore::Table.new(1)
-      @table.reset!
     end
 
     should 'return the value of the identifier' do
@@ -28,13 +27,7 @@ class TableTest < Test::Unit::TestCase
       assert_equal 1, @table.parent.identifier
     end
 
-    should 'be able to reset the entire table' do
-      @table.expects(:migrate).with(:down)
-      @table.expects(:migrate).with(:up)
-      @table.reset!
-    end
-
-    should 'have created the complete table' do
+    should 'have created the necessary tables' do
       assert_equal 0, DataStore::Base.db[:ds_1].count
       assert_equal 0, DataStore::Base.db[:ds_1_5].count
       assert_equal 0, DataStore::Base.db[:ds_1_30].count

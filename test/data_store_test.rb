@@ -44,7 +44,7 @@ class DataStoreTest < Test::Unit::TestCase
         assert_equal 1, DataStore::Base.count
       end
 
-      should 'return its attibutes' do
+      should 'return its attributes' do
         record = DataStore::Base.order(:created_at).last
         assert_equal 1, record.identifier
         assert_equal 'gauge', record.type
@@ -76,6 +76,16 @@ class DataStoreTest < Test::Unit::TestCase
         assert_equal 'Gas', DataStore::Base.order(:created_at).last.name
       end
 
+    end
+
+    context 'handling of database tables for the datapoints' do
+
+      should 'create the necessary datapoint tables' do
+        DataStore::Base.any_instance.expects(:drop_tables!)
+        DataStore::Base.any_instance.expects(:create_tables!)
+        DataStore::Base.create(identifier: 1, type: 'gauge', name: 'Electra')
+      end
+    
     end
 
   end

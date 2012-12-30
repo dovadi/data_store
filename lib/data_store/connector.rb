@@ -37,12 +37,12 @@ module DataStore
       @database ||= Sequel.connect(database_settings)
     end
 
+    private
+
     def disconnect
       database.disconnect
       @database = nil
     end
-
-    private
  
     def drop_table!
       DataStore.create_data_stores.apply(database, :down)

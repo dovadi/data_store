@@ -17,6 +17,10 @@ module DataStore
       create_tables!
     end
 
+    def before_destroy
+      drop_tables!
+    end
+
     # Convert serialized compression schema as a string back into the array object itself.
     # For example: "[5,4,3]" => [5,4,3]
     def compression_schema

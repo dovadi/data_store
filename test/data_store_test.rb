@@ -23,7 +23,7 @@ class DataStoreTest < Test::Unit::TestCase
       DataStore.configure do |config|
         config.database = ENV['DB'] || :postgres
       end
-      DataStore::Connector.new.reset!
+      connector = DataStore::Connector.new.reset!
     end
 
     context 'with added behaviour through Sequel::Model' do
@@ -42,6 +42,13 @@ class DataStoreTest < Test::Unit::TestCase
 
       should 'have added a record to the database' do
         assert_equal 1, DataStore::Base.count
+      end
+
+      should 'have created the necessary tables' do
+        assert_equal 0, DataStore::Base.db[:ds_1].count
+        assert_equal 0, DataStore::Base.db[:ds_1_5].count
+        assert_equal 0, DataStore::Base.db[:ds_1_20].count
+        assert_equal 0, DataStore::Base.db[:ds_1_60].count
       end
 
       should 'return its attributes' do
@@ -80,10 +87,19 @@ class DataStoreTest < Test::Unit::TestCase
 
     context 'handling of database tables for the datapoints' do
 
-      should 'create the necessary datapoint tables' do
+      should 'create the necessary datapoint tables on create' do
         DataStore::Base.any_instance.expects(:drop_tables!)
         DataStore::Base.any_instance.expects(:create_tables!)
         DataStore::Base.create(identifier: 1, type: 'gauge', name: 'Electra')
+      end
+
+      should 'destroy the corresponding datapoint tables on destroy' do
+        record = DataStore::Base.create(identifier: 1, type: 'gauge', name: 'Electra')
+        record.destroy        
+        assert_raise { DataStore::Base.db[:ds_1].count }
+        assert_raise { DataStore::Base.db[:ds_5].count }
+        assert_raise { DataStore::Base.db[:ds_20].count }
+        assert_raise { DataStore::Base.db[:ds_60].count }
       end
     
     end

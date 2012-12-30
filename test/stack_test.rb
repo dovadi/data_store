@@ -52,10 +52,10 @@ class StackTest < Test::Unit::TestCase
         assert_equal 1, @stack.count
       end
 
-      should 'pop a datapoint from the stack' do
+      should 'retunr the last datapoint' do
         @stack.push(120.34)
         @stack.push(120.38)
-        assert_equal 120.38, @stack.pop.value
+        assert_equal 120.38, @stack.last.value
       end
 
       should 'return corresponding model' do

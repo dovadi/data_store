@@ -25,8 +25,8 @@ module DataStore
       calculate_average_values
     end
 
-    # Pop the most recent datapoint from the stack
-    def pop
+    # Return the most recent datapoint added
+    def last
       model.order(:created).last
     end
 

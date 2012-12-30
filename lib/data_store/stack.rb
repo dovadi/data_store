@@ -22,6 +22,7 @@ module DataStore
     # Push a new datapoint on the stack
     def push(value)
       dataset << {value: value, created: Time.now.utc.to_f}
+      calculate_average_values
     end
 
     # Pop the most recent datapoint from the stack
@@ -51,6 +52,11 @@ module DataStore
     end
 
     private
+
+    def calculate_average_values
+      calculator = AverageCalculator.new(identifier)
+      calculator.perform
+    end
 
     def stack_table_names
       names  = [stack_name]

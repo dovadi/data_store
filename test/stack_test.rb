@@ -43,6 +43,10 @@ class StackTest < Test::Unit::TestCase
 
     context 'adding datapoints' do
 
+      setup do
+        @stack.stubs(:calculate_average_values)
+      end
+
       should 'push a datapoint to the stack' do
         @stack.push(120.34)
         assert_equal 1, @stack.count
@@ -58,10 +62,15 @@ class StackTest < Test::Unit::TestCase
         @stack.push(123.45)
         assert_equal 123.45, @stack.model.find(value: 123.45).value
       end
+    end
 
+    should 'Trigger the average calculator after pushing a value' do
+      calculator = mock
+      DataStore::AverageCalculator.expects(:new).with(@stack.identifier).returns(calculator)
+      calculator.expects(:perform)
+      @stack.push(120.34)
     end
 
   end
-
 
 end

@@ -27,13 +27,6 @@ class TableTest < Test::Unit::TestCase
       assert_equal 1, @table.parent.identifier
     end
 
-    should 'have created the necessary tables' do
-      assert_equal 0, DataStore::Base.db[:ds_1].count
-      assert_equal 0, DataStore::Base.db[:ds_1_5].count
-      assert_equal 0, DataStore::Base.db[:ds_1_30].count
-      assert_equal 0, DataStore::Base.db[:ds_1_300].count
-    end
-
     context 'adding datapoints' do
 
       setup do

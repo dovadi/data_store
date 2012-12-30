@@ -35,16 +35,6 @@ module DataStore
       dataset.count
     end
 
-    # # Create the database tables which are used for storing the datapoints
-    # def create!
-    #   migrate(:up)
-    # end
-
-    # # Drop the database tables which are used for storing the datapoints
-    # def drop!
-    #   migrate(:down)
-    # end
-
     # Return the corresponding dataset with the datapoitns
     def dataset
       database[table_name]
@@ -56,25 +46,6 @@ module DataStore
       calculator = AverageCalculator.new(identifier)
       calculator.perform
     end
-
-    # def table_names
-    #   names  = [table_name]
-    #   factor = 1
-    #   parent.compression_schema.each do |compression|
-    #     factor = (factor * compression)
-    #     names << table_name.to_s + '_' + factor.to_s
-    #   end
-    #   names
-    # end
-
-    # def migrate(direction = :up)
-    #   table_names.each do |name|
-    #     begin
-    #       DataStore.create_table(name).apply(database, direction)
-    #     rescue Sequel::DatabaseError
-    #     end
-    #   end
-    # end
 
     def database
       @database ||= DataStore::Base.db

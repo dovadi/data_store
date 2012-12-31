@@ -22,13 +22,13 @@ module DataStore
     end
   end
 
-  def self.create_table(table_name)
+  def self.create_table(table_name, data_type)
     Sequel.migration do
       change do
         create_table(table_name) do
           primary_key :id
-          Float       :value
-          Float       :created
+          column :value, data_type
+          column :created, :double
         end
       end
     end

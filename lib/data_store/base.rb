@@ -67,7 +67,7 @@ module DataStore
       database = sqlite_db? ? db : DataStore::Connector.new.database
       table_names.each do |name|
         begin
-          DataStore.create_table(name).apply(database, direction)
+          DataStore.create_table(name, data_type).apply(database, direction)
         rescue Sequel::DatabaseError
         end
       end

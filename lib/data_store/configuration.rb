@@ -31,7 +31,7 @@ module DataStore
       @compression_schema   = [6,5,3,4,4,3]
       @frequency            = 10
       @maximum_datapoints   = 800
-      @data_type            = :float
+      @data_type            = :double
       @database_config_file = File.expand_path('../../../config/database.yml', __FILE__)
     end
 

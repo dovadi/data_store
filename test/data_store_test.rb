@@ -62,7 +62,7 @@ class DataStoreTest < Test::Unit::TestCase
 
       should 'return default values if not set' do
         assert_equal 10, @record.frequency
-        assert_equal 'float', @record.data_type
+        assert_equal 'double', @record.data_type
         assert_equal 800, @record.maximum_datapoints
       end
 
@@ -83,6 +83,12 @@ class DataStoreTest < Test::Unit::TestCase
         assert_equal 'Gas', DataStore::Base.order(:created_at).last.name
       end
 
+    end
+
+    should 'create with the correct data type for value' do
+      record = DataStore::Base.create(identifier: 2, type: 'gauge', name: 'Electra', data_type: 'integer')
+      assert_equal :integer,Sequel::Model(DataStore::Base.db[:ds_2]).db_schema[:value][:type]
+      record.destroy
     end
 
     context 'handling of database tables for the datapoints' do

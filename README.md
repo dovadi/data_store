@@ -25,10 +25,10 @@ Or install it yourself as:
 ### Configuration
 
     DataStore.configure do |config|
-      config.prefix              = 'data_store'
+      config.prefix              = 'ds_'
       config.database            = :mysql
-      config.compression_schema  = [6,5,3,4,4,3]
-      config.data_type           = :float
+      config.compression_schema  = [6,5,3]
+      config.data_type           = :double
       config.frequency           = 10
       config.maximum_datapoints  = 800
     end
@@ -37,16 +37,18 @@ Or install it yourself as:
 
     DataStore::Base.create(identifier: 1, type: 'gauge', name: 'Electra', description: 'Actual usage of electra in the home')
 
-This will result in the creation of 2 tables, one for the original data with the following structure named 'data_store_1:
+This will result in the creation of 4 tables,
 
-    value:      float
-    created_at: timestamp
+    'ds_1'
+    'ds_1_6'
+    'ds_1_30'
+    'ds_1_90'
 
-and one for the average historical data with the following structure named 'data_store_1_history:
+with the following structure:
 
-    value:      float
-    created:    timestamp (float)
-    timeslot:   integer
+    id:      integer
+    value:   double
+    created: double #for unix timestamp
 
 and a record to the main data_stores table with the corresponding field names
 
@@ -56,7 +58,6 @@ and a record to the main data_stores table with the corresponding field names
     compression_schema
     frequency
     maximum_datapoints
-    keep_details
     data_type
 
 ### Add a datapoint

@@ -21,7 +21,11 @@ module DataStore
 
     # Add a new datapoint on the table
     def add(value)
-      dataset << {value: value, created: Time.now.utc.to_f}
+      if parent.type == 'counter'
+        original_value = value
+        value = value - last.value unless last.nil?
+      end
+      push(value, original_value)
       calculate_average_values
     end
 
@@ -41,6 +45,12 @@ module DataStore
     end
 
     private
+
+    def push(value, original_value = nil)
+      datapoint =  {value: value, created: Time.now.utc.to_f}
+      datapoint[:original_value] = original_value if original_value
+      dataset << datapoint
+    end
 
     def calculate_average_values
       calculator = AverageCalculator.new(identifier)

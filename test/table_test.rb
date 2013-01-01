@@ -5,11 +5,7 @@ class TableTest < Test::Unit::TestCase
   context 'DataStore::table general' do
 
     setup do
-      DataStore.configure do |config|
-        config.database = ENV['DB'] || :postgres
-      end
       DataStore::Connector.new.reset!
-
       @record = DataStore::Base.create(identifier:  1,
                                        type:        'gauge', 
                                        name:        'Electra',
@@ -57,6 +53,45 @@ class TableTest < Test::Unit::TestCase
       @table.add(120.34)
     end
 
+   context 'with a counter type' do
+
+      setup do
+        @record = DataStore::Base.create(identifier:         2,
+                                         type:               'counter', 
+                                         name:               'Gas',
+                                         description:        'Actual usage of natural gas',
+                                         compression_schema: [])
+        @table = DataStore::Table.new(2)
+      end
+
+      context 'adding datapoints' do
+
+        setup do
+          @table.stubs(:calculate_average_values)
+        end
+
+        should 'add the original value as the first datapoint to the table' do
+          @table.add(120123)
+          assert_equal 120123, @table.last.value
+        end
+
+        should 'add the difference when adding datapoints' do
+          @table.add(120125)
+          @table.add(120127)
+          assert_equal 2, @table.last.value
+        end
+
+        should 'add the difference when adding datapoints but store orginal value as well' do
+          @table.add(120125)
+          @table.add(120127)
+          assert_equal 120127, @table.last[:original_value] #original_value is not added as column to the Sequel model
+        end
+
+      end
+
+    end
+
   end
+
 
 end

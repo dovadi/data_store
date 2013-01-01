@@ -14,7 +14,8 @@ module DataStore
     #
     def create_table!
       DataStore.create_data_stores.apply(database, :up)
-    rescue Sequel::DatabaseError
+    rescue Sequel::DatabaseError => e
+      raise e if e.message.include?('FATAL')
     end
 
     # Drop data_stores table and recreate it
@@ -46,7 +47,8 @@ module DataStore
  
     def drop_table!
       DataStore.create_data_stores.apply(database, :down)
-    rescue Sequel::DatabaseError
+    rescue Sequel::DatabaseError => e
+      raise e if e.message.include?('FATAL')
     end
 
     def database_settings

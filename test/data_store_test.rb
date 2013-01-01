@@ -9,10 +9,7 @@ class DataStoreTest < Test::Unit::TestCase
     end
 
     should 'be able to define the configuration' do
-      DataStore.configure do |config|
-        config.database = ENV['DB'] || :mysql
-      end
-      assert_equal ENV['DB'] || :mysql, DataStore.configuration.database
+      assert_equal ENV['DB'] || :postgres, DataStore.configuration.database
     end
 
   end
@@ -20,10 +17,7 @@ class DataStoreTest < Test::Unit::TestCase
   context 'DataStore::Base general' do
 
     setup do
-      DataStore.configure do |config|
-        config.database = ENV['DB'] || :postgres
-      end
-      connector = DataStore::Connector.new.reset!
+      DataStore::Connector.new.reset!
     end
 
     context 'with added behaviour through Sequel::Model' do

@@ -67,8 +67,10 @@ module DataStore
       database = sqlite_db? ? db : DataStore::Connector.new.database
       table_names.each do |name|
         begin
-          DataStore.create_table(name, data_type).apply(database, direction)
-        rescue Sequel::DatabaseError
+          original_value = true if type == 'counter'
+          DataStore.create_table(name, data_type, original_value).apply(database, direction)
+        rescue Sequel::DatabaseError => e
+          raise e if e.message.include?('FATAL')
         end
       end
       database.disconnect unless sqlite_db?

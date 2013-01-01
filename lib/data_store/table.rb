@@ -19,7 +19,7 @@ module DataStore
       @model ||= Class.new(Sequel::Model(dataset))
     end
 
-    # Add a new datapoint on the table
+    # Add a new datapoint to the table
     def add(value)
       if parent.type == 'counter'
         original_value = value
@@ -47,7 +47,7 @@ module DataStore
     private
 
     def push(value, original_value = nil)
-      datapoint =  {value: value, created: Time.now.utc.to_f}
+      datapoint = { value: value, created: Time.now.utc.to_f }
       datapoint[:original_value] = original_value if original_value
       dataset << datapoint
     end

@@ -18,4 +18,8 @@ require 'data_store'
 
 class Test::Unit::TestCase
 
+  DataStore.configure do |config|
+    config.database = ENV['DB'] || :postgres
+  end
+
 end

@@ -13,8 +13,8 @@ class AverageCalculatorTest < Test::Unit::TestCase
                                        description: 'Actual usage of electra in the home',
                                        compression_schema: [2,2,2])
 
-      @calculator = DataStore::AverageCalculator.new 1
       @table = DataStore::Table.new(1)
+      @calculator = DataStore::AverageCalculator.new(@table)
     end
 
     should 'be valid' do
@@ -33,9 +33,10 @@ class AverageCalculatorTest < Test::Unit::TestCase
       assert_equal [2,4,8], @calculator.compression_factors
     end
 
-    should 'calculate the first average value' do
+    should 'calculate the average value for the first' do
       store_test_values(@table, [10,11])
-      assert_equal 10.5,  @calculator.perform
+      @calculator.perform
+      assert_equal 10.5, DataStore::Base.db[:ds_1_2].order(:created).last[:value]
     end
 
   end

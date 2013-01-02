@@ -55,7 +55,7 @@ module DataStore
     end
 
     def calculate_average_values
-      calculator = AverageCalculator.new(identifier, table_index)
+      calculator = AverageCalculator.new(self)
       calculator.perform
     end
 

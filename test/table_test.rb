@@ -48,7 +48,7 @@ class TableTest < Test::Unit::TestCase
 
     should 'Trigger the average calculator after adding a value' do
       calculator = mock
-      DataStore::AverageCalculator.expects(:new).with(@table.identifier, 0).returns(calculator)
+      DataStore::AverageCalculator.expects(:new).with(@table).returns(calculator)
       calculator.expects(:perform)
       @table.add(120.34)
     end

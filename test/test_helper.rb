@@ -22,4 +22,12 @@ class Test::Unit::TestCase
     config.database = ENV['DB'] || :postgres
   end
 
+  def store_test_values(table, values)
+    created = 0
+    values.each do |value|
+      table.model.insert(value: value, created: created)
+      created += table.parent.frequency
+    end
+  end
+
 end

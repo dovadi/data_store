@@ -28,6 +28,16 @@ module DataStore
       value.gsub(/\[|\]/,'').split(',').map(&:to_i) unless value.nil?
     end
 
+    def table_names
+      names  = [table_name]
+      factor = 1
+      compression_schema.each do |compression|
+        factor = (factor * compression)
+        names << (table_name.to_s + '_' + factor.to_s).to_sym
+      end
+      names
+    end
+
     private
 
     def default_values
@@ -49,16 +59,6 @@ module DataStore
     # Drop the database tables which are used for storing the datapoints
     def drop_tables!
       migrate(:down)
-    end
-
-    def table_names
-      names  = [table_name.to_s]
-      factor = 1
-      compression_schema.each do |compression|
-        factor = (factor * compression)
-        names << table_name.to_s + '_' + factor.to_s
-      end
-      names
     end
 
     def migrate(direction = :up)

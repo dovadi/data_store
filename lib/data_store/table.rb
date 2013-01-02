@@ -2,11 +2,12 @@ module DataStore
 
   class Table
 
-    attr_reader :identifier
+    attr_reader :identifier, :table_index
 
     # Initialize the table by passsing an identifier
-    def initialize(identifier)
-      @identifier = identifier
+    def initialize(identifier, table_index = 0)
+      @identifier  = identifier
+      @table_index = table_index
     end
 
     # Return a the corresponding parent class, i.e the settings from the data_stores table
@@ -20,7 +21,8 @@ module DataStore
     end
 
     # Add a new datapoint to the table
-    def add(value)
+    def add(value, table_index = nil)
+      @table_index = table_index if table_index
       if parent.type == 'counter'
         original_value = value
         value = value - last.value unless last.nil?
@@ -53,7 +55,7 @@ module DataStore
     end
 
     def calculate_average_values
-      calculator = AverageCalculator.new(identifier)
+      calculator = AverageCalculator.new(identifier, table_index)
       calculator.perform
     end
 
@@ -62,12 +64,9 @@ module DataStore
     end
 
     def table_name
-      (prefix + identifier.to_s).to_sym
+      parent.table_names[table_index]
     end
 
-    def prefix
-      DataStore.configuration.prefix
-    end
   end
 
 end

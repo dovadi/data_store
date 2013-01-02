@@ -17,4 +17,5 @@ group :test, :development do
   gem 'rb-fsevent'
   gem 'yard'
   gem 'redcarpet'
+  gem 'pry'
  end

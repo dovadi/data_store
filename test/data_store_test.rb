@@ -45,6 +45,10 @@ class DataStoreTest < Test::Unit::TestCase
         assert_equal 0, DataStore::Base.db[:ds_1_60].count
       end
 
+      should 'return all table_names' do
+        assert_equal [:ds_1, :ds_1_5, :ds_1_20, :ds_1_60], @record.table_names
+      end
+
       should 'return its attributes' do
         record = DataStore::Base.order(:created_at).last
         assert_equal 1, record.identifier

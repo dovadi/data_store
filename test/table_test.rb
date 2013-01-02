@@ -48,12 +48,38 @@ class TableTest < Test::Unit::TestCase
 
     should 'Trigger the average calculator after adding a value' do
       calculator = mock
-      DataStore::AverageCalculator.expects(:new).with(@table.identifier).returns(calculator)
+      DataStore::AverageCalculator.expects(:new).with(@table.identifier, 0).returns(calculator)
       calculator.expects(:perform)
       @table.add(120.34)
     end
 
-   context 'with a counter type' do
+    context 'DataStore::table general' do
+
+      setup do
+        DataStore::Connector.new.reset!
+        @record = DataStore::Base.create(identifier:  1,
+                                         type:        'gauge', 
+                                         name:        'Electra',
+                                         description: 'Actual usage of electra in the home',
+                                         compression_schema: [5,6,10])
+
+        @table = DataStore::Table.new(1, 1)
+        @table.stubs(:calculate_average_values)
+      end
+
+      should 'store a value in the compressed table' do
+        @table.add(12345.67)
+        assert_equal 12345.67, DataStore::Base.db[:ds_1_5].first[:value]
+      end
+
+      should 'store a value in the compressed table with the corresponding index' do
+        @table.add(765.432, 3)
+        assert_equal 765.432, DataStore::Base.db[:ds_1_300].first[:value]
+      end
+
+    end
+
+    context 'with a counter type' do
 
       setup do
         @record = DataStore::Base.create(identifier:         2,

@@ -25,18 +25,30 @@ class AverageCalculatorTest < Test::Unit::TestCase
       assert_equal 1, @calculator.identifier
     end
 
-    should 'return the corresponding compression_schema' do
-      assert_equal [2,2,2], @calculator.compression_schema
-    end
-
-    should 'return the corresponding compression factors' do
-      assert_equal [2,4,8], @calculator.compression_factors
-    end
-
     should 'calculate the average value for the first' do
-      store_test_values(@table, [10,11])
+      @table.model.insert(value: 10, created: 0)
+      @table.model.insert(value: 11, created: 10)
+
       @calculator.perform
       assert_equal 10.5, DataStore::Base.db[:ds_1_2].order(:created).last[:value]
+    end
+
+    should 'calculate the average value for the second compression' do
+      time_now_utc_returns(10)
+     
+      @table.model.insert(value: 10, created: 0)
+      @table.model.insert(value: 11, created: 10)
+
+      @calculator.perform
+      assert_equal 10.5, DataStore::Base.db[:ds_1_2].order(:created).first[:value]
+
+      @table.model.insert(value: 12, created: 30)
+      @table.model.insert(value: 13, created: 40)
+
+      time_now_utc_returns(30)
+
+      @calculator.perform
+      assert_equal 12.5, DataStore::Base.db[:ds_1_2].order(:created).last[:value]
     end
 
   end

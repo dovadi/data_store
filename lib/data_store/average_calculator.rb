@@ -11,31 +11,51 @@ module DataStore
       @base        = Base.find(identifier: identifier)
     end
 
+    # Calculate average value if needed
+    # Average value is store through an add call by a Table object
+    # So the average calculator is called again recursively
     def perform
-      if last[:created] % compression_factors[table_index] == 0
-        previous_id = last[:id] - compression_factors[table_index]
-        average = dataset.where{id > previous_id}.avg(:value)
-        table.add(average, table_index + 1) unless compression_finished
+      if calculation_needed?
+        average = previous_average_record ? calculate! : dataset.avg(:value)
+        table.add(average, table_index + 1)
       end
     end
 
-    def compression_schema
-      base.compression_schema
+    private
+
+    def calculate!
+      last_time = previous_average_record[:created]
+      dataset.where{created > last_time}.avg(:value)
+    end
+
+    def calculation_needed?
+      return false if compression_finished
+      if previous_average_record
+        time_difference_since_last_calculation >= table.parent.frequency * compression_factors[table_index]
+      else
+        dataset.count == compression_factors[table_index]
+      end
+    end
+
+    def time_difference_since_last_calculation
+      last[:created].round - previous_average_record[:created].round
     end
 
     def compression_factors
       array, factor = [], 1
-      compression_schema.each do |compression|
+      base.compression_schema.each do |compression|
         factor = (factor * compression)
         array << factor
       end
       array
     end
 
-    private
+    def previous_average_record
+      base.db[next_table].order(:created).last
+    end
 
     def compression_finished
-      table_index + 1 == compression_schema.size
+      table_index + 1 == base.compression_schema.size
     end
 
     def last
@@ -43,7 +63,7 @@ module DataStore
     end
 
     def dataset
-      @base.db[table_name]
+      base.db[table_name]
     end
 
     def table_name
@@ -52,6 +72,10 @@ module DataStore
       else
         (prefix + compression_factors[table_index - 1].to_s).to_sym
       end
+    end
+
+    def next_table
+      (prefix + compression_factors[table_index].to_s).to_sym
     end
 
     def prefix

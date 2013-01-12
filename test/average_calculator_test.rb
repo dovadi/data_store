@@ -129,7 +129,7 @@ class AverageCalculatorTest < Test::Unit::TestCase
                                        name:        'Electra',
                                        frequency:    10,
                                        description: 'Actual usage of gas in the home',
-                                       compression_schema: [2,2])
+                                       compression_schema: [2])
 
       @table = DataStore::Table.new(1)
       @calculator = DataStore::AverageCalculator.new(@table)
@@ -150,6 +150,25 @@ class AverageCalculatorTest < Test::Unit::TestCase
       @calculator.perform
 
       assert_equal 10.0, DataStore::Base.db[:ds_1_2].order(:created).last[:value]
+    end
+
+    should 'calculate the average values according to compression_schema' do
+      @table.model.insert(value: 10, original_value: 1010, created: 10)
+      @table.model.insert(value: 10, original_value: 1020, created: 20)
+
+      time_now_utc_returns(20)      
+      @calculator.perform
+
+      @table.model.insert(value: 20, original_value: 1040, created: 30)
+      @table.model.insert(value: 30, original_value: 1070, created: 40)
+
+      time_now_utc_returns(40)
+      @calculator.perform
+     
+      assert_equal 25.0, DataStore::Base.db[:ds_1_2].order(:created).last[:value]
+
+      #ds_1_4 already exists through other tests and not removed, but no new average record is added
+      assert_equal 0, DataStore::Base.db[:ds_1_4].count 
     end
 
     should 'calculate the average value by ignoring the original values' do

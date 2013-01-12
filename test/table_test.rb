@@ -34,7 +34,7 @@ class TableTest < Test::Unit::TestCase
         assert_equal 1, @table.count
       end
 
-      should 'retunr the last datapoint' do
+      should 'return the last datapoint' do
         @table.add(120.34)
         @table.add(120.38)
         assert_equal 120.38, @table.last.value
@@ -101,10 +101,22 @@ class TableTest < Test::Unit::TestCase
           assert_equal 120123, @table.last.value
         end
 
-        should 'add the difference when adding datapoints' do
+        should 'storing the difference between current and last value' do
           @table.add(120125)
           @table.add(120127)
+          @table.add(120129)
           assert_equal 2, @table.last.value
+        end
+
+        should 'remove the very first record after more datapoints' do
+          #first record => [#< @values={:id=>1, :value=>120125.0, :original_value=>120125.0, :created=>1358023611.75022}>]
+          #So this will be removed in order to maintain a dataset with only 'difference' values
+          @table.add(120125) 
+
+          @table.add(120127)
+          @table.add(120129)
+
+          assert_equal 2, @table.count
         end
 
         should 'add the difference when adding datapoints but store orginal value as well' do

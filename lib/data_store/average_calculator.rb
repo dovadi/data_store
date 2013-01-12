@@ -17,7 +17,7 @@ module DataStore
     def perform
       if calculation_needed?
         average = previous_average_record ? calculate! : dataset.avg(:value)
-        table.add(average, table_index + 1)
+        table.add(average, table_index + 1, :gauge)
       end
     end
 

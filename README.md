@@ -31,6 +31,8 @@ Or install it yourself as:
       config.data_type           = :double
       config.frequency           = 10
       config.maximum_datapoints  = 800
+      config.log_file            = 'data_store.log'
+      config.log_level           = Logger::INFO
     end
 
 ### Creation of a DataStore
@@ -62,9 +64,10 @@ and a record to the main data_stores table with the corresponding field names
 
 ### Add a datapoint
 
-    DataStore::Table.new(1).add(120.34)
-    DataStore:Table.new(1).add(123.09)
-    DataStore:Table.new(1).add(125.01)
+    table = DataStore::Table.new(1)
+    table.add(120.34)
+    table.add(123.09)
+    table.add(125.01)
 
 ### Fetching datapoints
 
@@ -87,7 +90,7 @@ or more specific count of the number of records
 
 last record
 
-    DataStore::Table.new(1).pop
+    DataStore::Table.new(1).last
 
 results
 

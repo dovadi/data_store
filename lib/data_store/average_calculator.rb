@@ -12,7 +12,7 @@ module DataStore
     end
 
     # Calculate average value if needed
-    # Average value is store through an add call by a Table object
+    # Average value is store dthrough an add call by a Table object
     # So the average calculator is called again recursively
     def perform
       if calculation_needed?
@@ -33,7 +33,7 @@ module DataStore
       if previous_average_record
         time_difference_since_last_calculation >= table.parent.frequency * compression_factors[table_index]
       else
-        dataset.count == compression_factors[table_index]
+        dataset.count == base.compression_schema[table_index]
       end
     end
 
@@ -55,7 +55,7 @@ module DataStore
     end
 
     def compression_finished
-      table_index + 1 == base.compression_schema.size
+      table_index == base.compression_schema.size
     end
 
     def last

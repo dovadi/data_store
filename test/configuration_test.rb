@@ -12,6 +12,7 @@ class ConfigurationTest < Test::Unit::TestCase
       assert_config_default :maximum_datapoints,   800
       assert_config_default :data_type,            :double
       assert_config_default :database_config_file, File.expand_path('../../config/database.yml', __FILE__)
+      assert_config_default :log_file,             $stdout
     end
 
     should "allow values to be overwritten" do
@@ -22,6 +23,7 @@ class ConfigurationTest < Test::Unit::TestCase
       assert_config_overridable :maximum_datapoints
       assert_config_overridable :data_type
       assert_config_overridable :database_config_file
+      assert_config_overridable :log_file
     end
 
   end

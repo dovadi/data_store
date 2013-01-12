@@ -19,16 +19,9 @@ require 'data_store'
 class Test::Unit::TestCase
 
   DataStore.configure do |config|
-    config.database = ENV['DB'] || :postgres
+    config.database       = ENV['DB'] || :postgres
+    config.enable_logging = false
   end
-
-  # def store_test_values(table, values)
-  #   created = 0
-  #   values.each do |value|
-  #     table.model.insert(value: value, created: created)
-  #     created += table.parent.frequency
-  #   end
-  # end
 
   def time_now_utc_returns(value)
     time = mock

@@ -18,4 +18,4 @@ group :test, :development do
   gem 'yard'
   gem 'redcarpet'
   gem 'pry'
- end
+end

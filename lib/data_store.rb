@@ -2,6 +2,7 @@
 
 require 'sequel'
 require 'yaml'
+require 'logger'
 
 $: << File.expand_path('../', __FILE__)
 $: << File.expand_path('../data_store/', __FILE__)
@@ -56,11 +57,20 @@ module DataStore
     private
 
     def define_base_class
-      connector = DataStore::Connector.new
+      connector = DataStore::Connector.new     
+      set_logger(connector.database)
       connector.create_table!
       suppress_warnings { self.const_set(:Base, Class.new(Sequel::Model(connector.dataset)))}
       load 'base.rb'
       connector.database.disconnect
+    end
+
+    def set_logger(db)
+      if configuration.enable_logging
+        logger = Logger.new(configuration.log_file)
+        logger.level = configuration.log_level
+        db.logger = logger
+      end
     end
 
   end

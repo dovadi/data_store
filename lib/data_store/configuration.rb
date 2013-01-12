@@ -25,6 +25,19 @@ module DataStore
     #The location of the database.yml file
     attr_accessor :database_config_file
 
+    #Enable logging. 
+    #  Default: true
+    attr_accessor :enable_logging
+
+    #The location of the log file
+    #  Default $stdout
+    attr_accessor :log_file
+
+    #The level of logging
+    #  Default: Logger::ERROR
+    attr_accessor :log_level
+
+
     def initialize
       @prefix               = 'ds_'
       @database             = :postgres
@@ -33,6 +46,9 @@ module DataStore
       @maximum_datapoints   = 800
       @data_type            = :double
       @database_config_file = File.expand_path('../../../config/database.yml', __FILE__)
+      @log_file             = $stdout
+      @log_level            = Logger::ERROR
+      @enable_logging       = true
     end
 
   end

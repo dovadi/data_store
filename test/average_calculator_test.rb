@@ -129,7 +129,7 @@ class AverageCalculatorTest < Test::Unit::TestCase
                                        name:        'Electra',
                                        frequency:    10,
                                        description: 'Actual usage of gas in the home',
-                                       compression_schema: [2,2,2])
+                                       compression_schema: [2,2])
 
       @table = DataStore::Table.new(1)
       @calculator = DataStore::AverageCalculator.new(@table)
@@ -152,21 +152,13 @@ class AverageCalculatorTest < Test::Unit::TestCase
       assert_equal 10.0, DataStore::Base.db[:ds_1_2].order(:created).last[:value]
     end
 
-    context 'Integration test through adding datapoints through table' do
+    should 'calculate the average value by ignoring the original values' do
+      @table.model.insert(value: 20, original_value: 12345, created: 10)
+      @table.model.insert(value: 30, original_value: 67890, created: 20)
+      
+      @calculator.perform
 
-      should 'also calculate the average value' do
-        time_now_utc_returns(0)
-        @table.add(1000)
-
-        time_now_utc_returns(10)
-        @table.add(1010)
-
-        time_now_utc_returns(20)
-        @table.add(1020)
-
-        assert_equal 10.0, DataStore::Base.db[:ds_1_2].order(:created).last[:value]
-      end
-
+      assert_equal 25.0, DataStore::Base.db[:ds_1_2].order(:created).last[:value]
     end
 
   end

@@ -5,6 +5,10 @@ class AverageCalculatorTest < Test::Unit::TestCase
   context 'AverageCalculator for a gauge type' do
   
     setup do
+      DataStore::Base.db.tables.each do |table|
+        DataStore::Base.db.drop_table(table)
+      end
+
       DataStore::Connector.new.reset!
       @record = DataStore::Base.create(identifier:  1,
                                        type:        'gauge', 
@@ -72,6 +76,8 @@ class AverageCalculatorTest < Test::Unit::TestCase
         assert_equal 16.5, DataStore::Base.db[:ds_1_2].order(:created).last[:value]
         assert_equal 15.5, DataStore::Base.db[:ds_1_4].order(:created).last[:value]
         assert_equal 13.5, DataStore::Base.db[:ds_1_8].order(:created).last[:value]
+
+        assert_equal [:data_stores, :ds_1, :ds_1_2, :ds_1_4, :ds_1_8],  DataStore::Base.db.tables.sort
       end
     end
 
@@ -123,6 +129,10 @@ class AverageCalculatorTest < Test::Unit::TestCase
   context 'AverageCalculator for a counter type' do
   
     setup do
+      DataStore::Base.db.tables.each do |table|
+        DataStore::Base.db.drop_table(table)
+      end
+
       DataStore::Connector.new.reset!
       @record = DataStore::Base.create(identifier:  1,
                                        type:        'counter', 
@@ -167,8 +177,7 @@ class AverageCalculatorTest < Test::Unit::TestCase
      
       assert_equal 25.0, DataStore::Base.db[:ds_1_2].order(:created).last[:value]
 
-      #ds_1_4 already exists through other tests and not removed, but no new average record is added
-      assert_equal 0, DataStore::Base.db[:ds_1_4].count 
+      assert_equal [:data_stores, :ds_1, :ds_1_2],  DataStore::Base.db.tables.sort
     end
 
     should 'calculate the average value by ignoring the original values' do

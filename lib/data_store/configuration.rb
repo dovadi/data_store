@@ -10,16 +10,20 @@ module DataStore
     attr_accessor :database
 
     # The schema is the way avarages of the datapoints is calculated/
+    #  Default: [6,5,3,4,4,3]
     attr_accessor :compression_schema
 
     # The frequency tells how often data entry is done.
     # A frequency of 10 means a data entry once every 10 seconds.
+    #  Default: 10 sec
     attr_accessor :frequency
 
     # The maximum datapoints is the maximum number of datapoint within a given timeframe
+    #  Default: 800
     attr_accessor :maximum_datapoints
 
     # The data type in which the value is stored
+    #  Default: double
     attr_accessor :data_type
 
     #The location of the database.yml file
@@ -38,6 +42,11 @@ module DataStore
     attr_accessor :log_level
 
 
+    #Allow concurrency by calculating average values in multiple threads
+    #  Default: false
+    attr_accessor :allow_concurrency
+
+
     def initialize
       @prefix               = 'ds_'
       @database             = :postgres
@@ -49,6 +58,7 @@ module DataStore
       @log_file             = $stdout
       @log_level            = Logger::ERROR
       @enable_logging       = true
+      @allow_concurrency    = false
     end
 
   end

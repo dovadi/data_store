@@ -45,6 +45,7 @@ class AverageCalculatorTest < Test::Unit::TestCase
         @table.model.insert(value: 11, created: 10)
 
         @calculator.perform
+
         assert_equal 10.5, DataStore::Base.db[:ds_1_2].order(:created).first[:value]       
 
         @table.model.insert(value: 12, created: 20)
@@ -89,6 +90,7 @@ class AverageCalculatorTest < Test::Unit::TestCase
         @table.model.insert(value: 11, created: 10)
 
         @calculator.perform
+
         assert_equal 10.5, DataStore::Base.db[:ds_1_2].order(:created).first[:value]       
 
         @table.model.insert(value: 12, created: 20)

@@ -61,7 +61,7 @@ module DataStore
 
     def calculate_average_values
       calculator = AverageCalculator.new(self)
-      calculator.perform
+      DataStore.configuration.allow_concurrency ? calculator.perform! : calculator.perform
     end
 
     def database

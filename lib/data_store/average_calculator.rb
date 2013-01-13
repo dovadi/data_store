@@ -2,6 +2,8 @@ module DataStore
 
   class AverageCalculator
 
+    include Celluloid
+
     attr_reader :identifier, :base, :table_index, :table
 
     def initialize(table)

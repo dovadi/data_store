@@ -8,6 +8,7 @@ gem 'sequel', '~>3.41.0'
 gem 'sqlite3'
 gem 'pg'
 gem 'mysql2'
+gem 'celluloid'
 
 group :test, :development do
   gem 'shoulda'

@@ -53,6 +53,14 @@ class TableTest < Test::Unit::TestCase
       @table.add(120.34)
     end
 
+    should 'Trigger the average calculator after adding a value asynchrone if allow_concurrency is set to tru' do
+      DataStore.configuration.expects(:allow_concurrency).returns(true)
+      calculator = mock
+      DataStore::AverageCalculator.expects(:new).with(@table).returns(calculator)
+      calculator.expects(:perform!)
+      @table.add(120.34)
+    end
+
     context 'DataStore::table general' do
 
       setup do

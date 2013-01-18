@@ -4,7 +4,7 @@ module DataStore
 
     include Celluloid
 
-    TIMESTAMP_CORRECTION = 0.0001
+    TIMESTAMP_CORRECTION_FACTOR = 0.0001
 
     attr_reader :identifier, :base, :table_index, :table
 
@@ -21,23 +21,20 @@ module DataStore
     def perform
       if calculation_needed?
         average    = previous_average_record ? calculate! : dataset.avg(:value)
-        table.type = :gauge
-        table.add(average, table_index + 1, last[:created])
+        table.add(average, table_index + 1, last[:created], :gauge)
       end
     end
 
     private
 
     def calculate!
-      last_time = previous_average_record[:created] + TIMESTAMP_CORRECTION
+      last_time = previous_average_record[:created] + TIMESTAMP_CORRECTION_FACTOR
       dataset.where{created > last_time}.avg(:value)
     end
 
     def calculation_needed?
       return false if compression_finished
       if previous_average_record
-        time_difference_since_last_calculation
-        time_resolution   = table.parent.frequency * compression_factors[table_index]
         correction_factor = 0.1
         time_difference_since_last_calculation >= (time_resolution - (time_resolution * correction_factor)) 
       else
@@ -47,6 +44,10 @@ module DataStore
 
     def time_difference_since_last_calculation
       last[:created].round - previous_average_record[:created].round
+    end
+
+    def time_resolution
+      table.parent.frequency * compression_factors[table_index]
     end
 
     def compression_factors

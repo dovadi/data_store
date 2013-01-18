@@ -147,7 +147,7 @@ class TableTest < Test::Unit::TestCase
       @datapoints = []
       values.each do |value|
         @datapoints << [value, start_time]
-        start_time += rand(9..11)
+        start_time += rand(9.00..11.00)
       end               
       DataStore::Connector.new.reset!
       @record = DataStore::Base.create(identifier:  1,

@@ -2,7 +2,7 @@ module DataStore
 
   class Table
 
-    attr_reader :identifier, :table_index, :type, :original_value
+    attr_reader :identifier, :table_index, :original_value
 
     # Initialize the table by passsing an identifier
     def initialize(identifier, table_index = 0)
@@ -23,17 +23,9 @@ module DataStore
     # Add a new datapoint to the table
     # In case of a counter type, store the difference between current and last value
     # And calculates average values on the fly according to compression schema
-    def add(value, table_index = nil, created = Time.now.utc.to_f )
+    def add(value, table_index = nil, created = Time.now.utc.to_f, type = parent.type)
       @table_index = table_index if table_index
-      push(value, created)
-    end
-
-    def type=(value)
-      @type = value
-    end
-
-    def type
-      @type || parent.type
+      push(value, created, type)
     end
 
     # Return the most recent datapoint added
@@ -59,7 +51,7 @@ module DataStore
 
     private
 
-    def push(value, created)
+    def push(value, created, type)
       value = difference_with_previous(value) if type.to_s == 'counter'
       datapoint = { value: value, created: created }
       datapoint[:original_value] = original_value if original_value

@@ -35,8 +35,8 @@ module DataStore
     def calculation_needed?
       return false if compression_finished
       if previous_average_record
-        correction_factor = 0.1
-        time_difference_since_last_calculation >= (time_resolution - (time_resolution * correction_factor)) 
+        tolerance = DataStore.configuration.frequency_tolerance
+        time_difference_since_last_calculation >= (time_resolution - (time_resolution * tolerance)) 
       else
         dataset.count == base.compression_schema[table_index]
       end

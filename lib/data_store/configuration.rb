@@ -18,6 +18,13 @@ module DataStore
     #  Default: 10 sec
     attr_accessor :frequency
 
+    # Tolerance of the frequency in which datapoints are added
+    #  Default: 0.05 
+    # This means a 5% margin. So with a frequency of 10s, 
+    # the next datapoint within 9.95 - 10.5 is considered the next datapoint
+    attr_accessor :frequency_tolerance
+
+
     # The maximum datapoints is the maximum number of datapoint within a given timeframe
     #  Default: 800
     attr_accessor :maximum_datapoints
@@ -47,18 +54,20 @@ module DataStore
     attr_accessor :allow_concurrency
 
 
+
     def initialize
-      @prefix               = 'ds_'
-      @database             = :postgres
-      @compression_schema   = [6,5,3,4,4,3]
-      @frequency            = 10
-      @maximum_datapoints   = 800
-      @data_type            = :double
-      @database_config_file = File.expand_path('../../../config/database.yml', __FILE__)
-      @log_file             = $stdout
-      @log_level            = Logger::ERROR
-      @enable_logging       = true
-      @allow_concurrency    = false
+      @prefix                      = 'ds_'
+      @database                    = :postgres
+      @compression_schema          = [6,5,3,4,4,3]
+      @frequency                   = 10
+      @maximum_datapoints          = 800
+      @data_type                   = :double
+      @database_config_file        = File.expand_path('../../../config/database.yml', __FILE__)
+      @log_file                    = $stdout
+      @log_level                   = Logger::ERROR
+      @enable_logging              = true
+      @allow_concurrency           = false
+      @frequency_tolerance         = 0.05
     end
 
   end

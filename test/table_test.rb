@@ -81,7 +81,7 @@ class TableTest < Test::Unit::TestCase
       end
 
       should 'store a value in the compressed table with the corresponding index' do
-        @table.add(765.432, 3)
+        @table.add(765.432, table_index: 3)
         assert_equal 765.432, DataStore::Base.db[:ds_1_300].first[:value]
       end
 

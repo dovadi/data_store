@@ -23,9 +23,16 @@ module DataStore
     # Add a new datapoint to the table
     # In case of a counter type, store the difference between current and last value
     # And calculates average values on the fly according to compression schema
-    def add(value, table_index = nil, created = Time.now.utc.to_f, type = parent.type)
-      @table_index = table_index if table_index
-      push(value, created, type)
+    #
+    # Options (hash):
+    #  * created: timestamp
+    #  * type: gauge or counter
+    #  * table_index: in which compressed table
+    def add(value, options = {})
+      created      = options[:created] || Time.now.utc.to_f
+      type         = options[:type] || parent.type
+      @table_index = options[:table_index] if options[:table_index]
+      push(value, type, created)
     end
 
     # Return the most recent datapoint added
@@ -45,13 +52,13 @@ module DataStore
 
     def import(datapoints)
       datapoints.each do |data|
-        add(data[0], 0, data[1])
+        add(data[0], table_index: 0, created: data[1])
       end      
     end
 
     private
 
-    def push(value, created, type)
+    def push(value, type, created)
       value = difference_with_previous(value) if type.to_s == 'counter'
       datapoint = { value: value, created: created }
       datapoint[:original_value] = original_value if original_value

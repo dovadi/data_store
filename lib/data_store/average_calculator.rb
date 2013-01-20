@@ -20,8 +20,8 @@ module DataStore
     # So the average calculator is called again recursively
     def perform
       if calculation_needed?
-        average    = previous_average_record ? calculate! : dataset.avg(:value)
-        table.add(average, table_index + 1, last[:created], :gauge)
+        average = previous_average_record ? calculate! : dataset.avg(:value)
+        table.add(average, table_index: table_index + 1, created: last[:created], type: :gauge)
       end
     end
 

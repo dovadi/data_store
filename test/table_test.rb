@@ -85,6 +85,11 @@ class TableTest < Test::Unit::TestCase
         assert_equal 765.432, DataStore::Base.db[:ds_1_300].first[:value]
       end
 
+      should 'be able to import datapoints' do
+        @table.import([[100, 10], [120, 20], [130, 20]])
+        assert_equal 3, @table.model.db[:ds_1].count
+      end
+
     end
 
     context 'with a counter type' do
@@ -138,37 +143,5 @@ class TableTest < Test::Unit::TestCase
     end
 
   end
-
-  context 'Import datapoints (gauge type)' do
-    setup do
-      start_time  = 1349042407.00000
-      values      = [2380.0, 2370.0, 2380.0, 2380.0, 2390.0, 2390.0, 2390.0, 2380.0, 2380.0, 2380.0, 2380.0, 2370.0, 2370.0, 2370.0, 
-                     2380.0, 2380.0, 2380.0, 2380.0, 230.0, 230.0, 230.0, 230.0, 230.0, 230.0]
-      @datapoints = []
-      values.each do |value|
-        @datapoints << [value, start_time]
-        start_time += rand(9.00..11.00)
-      end               
-      DataStore::Connector.new.reset!
-      @record = DataStore::Base.create(identifier:  1,
-                                       type:        'gauge', 
-                                       name:        'Electra',
-                                       description: 'Actual usage of electra in the home',
-                                       compression_schema: [2,3])
-      @table = DataStore::Table.new(1)
-    end
-
-    should 'store the data and calculate averages' do
-      @table.import(@datapoints)
-      assert_equal 24, @table.model.db[:ds_1].count
-      assert_equal 12, @table.model.db[:ds_1_2].count
-      assert_equal 4, @table.model.db[:ds_1_6].count
-
-      assert_equal 1842, @table.model.db[:ds_1].avg(:value).round
-      assert_equal 1842, @table.model.db[:ds_1_2].avg(:value).round
-      assert_equal 1842, @table.model.db[:ds_1_6].avg(:value).round
-    end
-  end
-
 
 end

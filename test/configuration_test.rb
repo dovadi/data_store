@@ -16,7 +16,6 @@ class ConfigurationTest < Test::Unit::TestCase
       assert_config_default :enable_logging,       true
       assert_config_default :log_file,             $stdout
       assert_config_default :log_level,            Logger::ERROR
-      assert_config_default :allow_concurrency,    false
     end
 
     should "allow values to be overwritten" do
@@ -31,7 +30,6 @@ class ConfigurationTest < Test::Unit::TestCase
       assert_config_overridable :enable_logging
       assert_config_overridable :log_file
       assert_config_overridable :log_level
-      assert_config_overridable :allow_concurrency
     end
 
   end

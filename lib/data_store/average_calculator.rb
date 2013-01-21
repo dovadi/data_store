@@ -2,8 +2,6 @@ module DataStore
 
   class AverageCalculator
 
-    include Celluloid
-
     TIMESTAMP_CORRECTION_FACTOR = 0.0001
 
     attr_reader :identifier, :base, :table_index, :table

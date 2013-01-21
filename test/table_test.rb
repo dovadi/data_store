@@ -34,6 +34,11 @@ class TableTest < Test::Unit::TestCase
         assert_equal 1, @table.count
       end
 
+      should 'be able to add a datapoint to the table asynchronously' do
+        @table.add!(120.34)
+        assert_equal 1, @table.count
+      end
+
       should 'return the last datapoint' do
         @table.add(120.34)
         @table.add(120.38)
@@ -48,17 +53,15 @@ class TableTest < Test::Unit::TestCase
 
     should 'Trigger the average calculator after adding a value' do
       calculator = mock
-      DataStore::AverageCalculator.expects(:new).with(@table).returns(calculator)
+      #Need to use any_parameters instead of @table because of Celluloid
+      DataStore::AverageCalculator.expects(:new).with(any_parameters).returns(calculator)
       calculator.expects(:perform)
       @table.add(120.34)
     end
 
-    should 'Trigger the average calculator after adding a value asynchrone if allow_concurrency is set to tru' do
-      DataStore.configuration.expects(:allow_concurrency).returns(true)
-      calculator = mock
-      DataStore::AverageCalculator.expects(:new).with(@table).returns(calculator)
-      calculator.expects(:perform!)
-      @table.add(120.34)
+    should 'be able to import datapoints' do
+      @table.import([[100, 10], [120, 20], [130, 20]])
+      assert_equal 3, @table.model.db[:ds_1].count
     end
 
     context 'DataStore::table general' do
@@ -83,11 +86,6 @@ class TableTest < Test::Unit::TestCase
       should 'store a value in the compressed table with the corresponding index' do
         @table.add(765.432, table_index: 3)
         assert_equal 765.432, DataStore::Base.db[:ds_1_300].first[:value]
-      end
-
-      should 'be able to import datapoints' do
-        @table.import([[100, 10], [120, 20], [130, 20]])
-        assert_equal 3, @table.model.db[:ds_1].count
       end
 
     end

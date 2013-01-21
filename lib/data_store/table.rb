@@ -2,6 +2,8 @@ module DataStore
 
   class Table
 
+    include Celluloid
+
     attr_reader :identifier, :table_index, :original_value
 
     # Initialize the table by passsing an identifier
@@ -52,7 +54,7 @@ module DataStore
 
     def import(datapoints)
       datapoints.each do |data|
-        add(data[0], table_index: 0, created: data[1])
+        add!(data[0], table_index: 0, created: data[1])
       end      
     end
 
@@ -68,7 +70,7 @@ module DataStore
 
     def calculate_average_values
       calculator = AverageCalculator.new(self)
-      DataStore.configuration.allow_concurrency ? calculator.perform! : calculator.perform
+      calculator.perform
     end
 
     def difference_with_previous(value)

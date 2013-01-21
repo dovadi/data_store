@@ -48,13 +48,6 @@ module DataStore
     #  Default: Logger::ERROR
     attr_accessor :log_level
 
-
-    #Allow concurrency by calculating average values in multiple threads
-    #  Default: false
-    attr_accessor :allow_concurrency
-
-
-
     def initialize
       @prefix                      = 'ds_'
       @database                    = :postgres
@@ -66,7 +59,6 @@ module DataStore
       @log_file                    = $stdout
       @log_level                   = Logger::ERROR
       @enable_logging              = true
-      @allow_concurrency           = false
       @frequency_tolerance         = 0.05
     end
 

@@ -52,6 +52,20 @@ module DataStore
       database[table_name]
     end
 
+    # Fetch the corresponding datapoints
+    #
+    # Options:
+    #  * :from
+    #  * :till
+    #
+    def fetch(options)
+      datapoints = []
+      query = model.where{created >= options[:from]}.where{created <= options[:till]}.order(:created)
+      query.all.map{|record| datapoints <<[record[:value], record[:created]]}
+      datapoints
+    end
+
+    # Import original datapoints, mostly to recreate compression tables
     def import(datapoints)
       datapoints.each do |data|
         add!(data[0], table_index: 0, created: data[1])

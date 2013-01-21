@@ -64,6 +64,21 @@ class TableTest < Test::Unit::TestCase
       assert_equal 3, @table.model.db[:ds_1].count
     end
 
+    context 'fetch' do
+      setup do
+        @from = Time.now.utc.to_f - 3600
+        @till = Time.now.utc.to_f
+
+        @table.model.insert(value: 10, created: @from)
+        @table.model.insert(value: 11, created: @from + 10)
+      end
+
+      should 'return the datapoinst in given time frame' do
+        assert_equal [10.0, 11.0], @table.fetch(:from => @from, :till => @till).map{|datapoint| datapoint[0]}
+        assert_equal [@from.round, (@from + 10).round], @table.fetch(:from => @from, :till => @till).map{|datapoint| datapoint[1].round}
+      end
+    end
+
     context 'DataStore::table general' do
 
       setup do

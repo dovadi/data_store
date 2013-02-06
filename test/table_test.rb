@@ -73,10 +73,31 @@ class TableTest < Test::Unit::TestCase
         @table.model.insert(value: 11, created: @from + 10)
       end
 
-      should 'return the datapoinst in given time frame' do
+      should 'return the datapoints in a given time frame' do
         assert_equal [10.0, 11.0], @table.fetch(:from => @from, :till => @till).map{|datapoint| datapoint[0]}
         assert_equal [@from.round, (@from + 10).round], @table.fetch(:from => @from, :till => @till).map{|datapoint| datapoint[1].round}
       end
+
+      should 'return the datapoints from the corresponding time frame' do
+        time = Time.now.utc.to_f
+
+        #Extensive mocking, should we introduce Timeslot object for a more clean and simple test?
+        fourth_query = mock
+        fourth_query.stubs(:all).returns([])
+        third_query  = mock
+        third_query.stubs(:order).returns(fourth_query)
+        second_query = mock
+        second_query.stubs(:where).returns(third_query)
+        first_query  = mock
+        first_query.stubs(:where).returns(second_query)
+
+        @table.parent.db.expects('[]').with(:ds_1_5).returns(first_query)
+        @table.fetch(:from => time, :till => time + 8001)
+
+        @table.parent.db.expects('[]').with(:ds_1_30).returns(first_query)
+        @table.fetch(:from => time, :till => time + 40001)
+      end
+
     end
 
     context 'DataStore::table general' do

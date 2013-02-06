@@ -38,6 +38,20 @@ module DataStore
       names
     end
 
+    def time_borders
+      width = time_width
+      borders = [width]
+      compression_schema.each do |compression|
+        width =  width * compression
+        borders << width
+      end
+      borders
+    end
+
+    def time_width
+      DataStore.configuration.frequency * DataStore.configuration.maximum_datapoints
+    end
+
     private
 
     def default_values

@@ -60,7 +60,7 @@ module DataStore
     #
     def fetch(options)
       datapoints = []
-      query = model.where{created >= options[:from]}.where{created <= options[:till]}.order(:created)
+      query = parent.db[timeslot(options)].where{created >= options[:from]}.where{created <= options[:till]}.order(:created)
       query.all.map{|record| datapoints <<[record[:value], record[:created]]}
       datapoints
     end
@@ -73,6 +73,16 @@ module DataStore
     end
 
     private
+
+    def timeslot(options)
+      distance = options[:till] - options[:from]
+      index = 0
+      parent.time_borders.each_with_index do |value, idx|
+        index = idx
+        break if value >= distance
+      end
+      parent.table_names[index]
+    end
 
     def push(value, type, created)
       value = difference_with_previous(value) if type.to_s == 'counter'

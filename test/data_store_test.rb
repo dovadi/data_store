@@ -49,6 +49,10 @@ class DataStoreTest < Test::Unit::TestCase
         assert_equal [:ds_1, :ds_1_5, :ds_1_20, :ds_1_60], @record.table_names
       end
 
+      should 'return its time_borders' do
+        assert_equal [8000, 40000, 160000, 480000], @record.time_borders
+      end
+
       should 'return its attributes' do
         record = DataStore::Base.order(:created_at).last
         assert_equal 1, record.identifier

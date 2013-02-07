@@ -4,7 +4,7 @@
 ![http://travis-ci.org/dovadi/data_store](https://secure.travis-ci.org/dovadi/data_store.png)
 </a>
 
-DataStore is designed to store real time data and manage the growth of your dataset by deciding the timeperiod of your historical data
+DataStore is designed to store real time data and manage the growth of your dataset by deciding the time period of your historical data. DataStore is tested with Ruby 1.9.3, Rubinius and JRuby and works with three database adapters Sqlite, Mysql and Postgresql.
 
 ## Installation
 
@@ -73,7 +73,7 @@ and a record to the main data_stores table with the corresponding field names
 
     DataStore::Table.new(1).fetch(:from => (Time.now.utc - 3600).to_f, :till => Time.now.utc.to_f)
 
-will result in an array of maximum 800 data points. An data point consists of an unix timestamp (UTC) and a value
+will result in an array of the maximum data points. An data point consists of an unix timestamp (UTC) and a value
 
     [[1352668356, 120], [1352678356, 123.09], [1352688356, 125.01]]
 
@@ -81,12 +81,11 @@ will result in an array of maximum 800 data points. An data point consists of an
 
     DataStore::Table.new(1).parent
 
-will return the correspondinf record from the general data_stores table
+will return the corresponding record from the general data_stores table
 
 or more specific count of the number of records
 
     DataStore::Table.new(1).count #=> 1249336
-    DataStore.new(1).history_count
 
 last record
 
@@ -98,7 +97,7 @@ results
 
 ### Managing the size of your data set
 
-### Export a data store
+### Export a data store (NOT implemented yet)
 
     DDataStore::Table.new(1).export
     

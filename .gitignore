@@ -4,6 +4,8 @@
 .bundle
 .config
 .yardoc
+.rbx/
+config/emonweb.yml
 Gemfile.lock
 InstalledFiles
 _yardoc

@@ -3,8 +3,6 @@ postgres:
   username: postgres
   password:
   database: data_store_test
-  pool: 5
-  timeout: 5000
   host: localhost
 
 sqlite:
@@ -14,8 +12,5 @@ sqlite:
 mysql:
   adapter: mysql2
   username: root
-  password:
   database: data_store_test
-  pool: 5
-  timeout: 5000
   host: localhost

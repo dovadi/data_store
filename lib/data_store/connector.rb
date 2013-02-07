@@ -35,10 +35,34 @@ module DataStore
 
     # Return the database object to which its connected.
     def database
-      @database ||= Sequel.connect(database_settings)
+      @database ||= begin
+        if RUBY_PLATFORM == 'java'
+          Sequel.connect(jdbc_settings)
+        else
+          Sequel.connect(database_settings)
+        end
+      end
     end
 
     private
+
+    def jdbc_settings
+      settings = database_settings
+      db =  case settings['adapter']
+            when 'postgres'
+              'postgresql'
+            when 'mysql2'
+              'mysql'
+            else
+              settings['adapter']
+            end
+      if db == 'sqlite'
+        uri = "jdbc:#{db}:#{settings['database']}"
+      else
+        uri = "jdbc:#{db}://#{settings['host']}/#{settings['database']}?user=#{settings['username']}"
+      end
+      settings['password'] ? uri + "&password=#{settings['password']}" : uri
+    end
 
     def disconnect
       database.disconnect

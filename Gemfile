@@ -3,11 +3,21 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in data_store.gemspec
 gemspec
 
-gem 'rake', '0.9.2.2'
-gem 'sequel', '~>3.41.0'
-gem 'sqlite3'
-gem 'pg'
-gem 'mysql2'
+gem 'rake'
+gem 'sequel'
+
+platforms :jruby do
+  gem 'jdbc-mysql'
+  gem 'jdbc-sqlite3'
+  gem 'jdbc-postgres', '9.1.901' #9.2 throws an error NameError: missing class or uppercase package name (`org.postgresql.Driver')
+end
+
+platforms :ruby do
+  gem 'mysql2'
+  gem 'sqlite3'
+  gem 'pg'
+end
+
 gem 'celluloid'
 
 group :test, :development do
@@ -16,7 +26,9 @@ group :test, :development do
   gem 'guard'
   gem 'guard-test'
   gem 'rb-fsevent'
-  gem 'yard'
-  gem 'redcarpet'
   gem 'pry'
+  platforms :ruby do
+    gem 'yard'
+    gem 'redcarpet'
+  end
 end

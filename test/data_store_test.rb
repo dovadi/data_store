@@ -69,10 +69,10 @@ class DataStoreTest < Test::Unit::TestCase
       end
 
       should 'have timestamps' do
-        assert_equal true, @record.created_at.is_a?(Time)
-        assert_equal true, @record.updated_at.is_a?(Time)
+        assert @record.created_at
+        assert @record.updated_at
       end
-      
+
       should 'create a record with a uniq identifier' do
         assert_raise 'Sequel::DatabaseError(<SQLite3::ConstraintException: column identifier is not unique>)' do
           DataStore::Base.create(identifier: 1, type: 'gauge', name: 'Electra')
@@ -109,7 +109,7 @@ class DataStoreTest < Test::Unit::TestCase
         assert_raise { DataStore::Base.db[:ds_20].count }
         assert_raise { DataStore::Base.db[:ds_60].count }
       end
-    
+
     end
 
   end

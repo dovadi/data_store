@@ -24,7 +24,6 @@ module DataStore
     # the next datapoint within 9.95 - 10.5 is considered the next datapoint
     attr_accessor :frequency_tolerance
 
-
     # The maximum datapoints is the maximum number of datapoint within a given timeframe
     #  Default: 800
     attr_accessor :maximum_datapoints

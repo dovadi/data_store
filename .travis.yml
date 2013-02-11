@@ -4,6 +4,13 @@ rvm:
   - rbx-19mode
   - jruby-19mode
 
+matrix:
+  exclude:
+    - rvm: jruby-19mode
+      env: DB=sqlite
+    - rvm: rbx-19mode
+      env: DB=sqlite
+
 branches:
   only:
     - master

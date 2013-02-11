@@ -15,4 +15,18 @@ Gem::Specification.new do |gem|
   gem.name          = 'data_store'
   gem.require_paths = ['lib']
   gem.version       = DataStore::VERSION
+
+  gem.add_dependency('sequel')
+  gem.add_dependency('celluloid')
+
+  if RUBY_PLATFORM == 'java'
+    gem.add_dependency('jdbc-mysql')
+    gem.add_dependency('jdbc-sqlite3')
+    gem.add_dependency('jdbc-postgres')
+  else
+     gem.add_dependency('mysql2')
+     gem.add_dependency('sqlite3')
+     gem.add_dependency('pg')
+  end
+
 end

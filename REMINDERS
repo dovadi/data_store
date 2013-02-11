@@ -1,6 +1,6 @@
 Publish gem
 ===========
-
+# Update version.rb
 # git push
 # git tag -a 0.0.1 -m "Initial commit"
 # git push --tags

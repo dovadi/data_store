@@ -58,7 +58,7 @@ module DataStore
     private
 
     def define_base_class
-      connector = DataStore::Connector.new     
+      connector = DataStore::Connector.new
       set_logger(connector.database)
       connector.create_table!
       suppress_warnings { self.const_set(:Base, Class.new(Sequel::Model(connector.dataset)))}

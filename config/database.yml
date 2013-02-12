@@ -1,5 +1,5 @@
 postgres:
-  adapter: postgres
+  adapter: postgresql
   username: postgres
   password:
   database: data_store_test

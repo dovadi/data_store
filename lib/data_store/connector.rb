@@ -77,7 +77,9 @@ module DataStore
 
     def database_settings
       config_file = DataStore.configuration.database_config_file
-      YAML.load(File.open(config_file))[DataStore.configuration.database.to_s]
+      settings = YAML.load(File.open(config_file))[DataStore.configuration.database.to_s]
+      settings['adapter'] = 'postgres' if settings['adapter'] = 'postgresql'
+      settings
     end
 
   end

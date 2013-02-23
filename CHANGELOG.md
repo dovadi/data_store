@@ -1,3 +1,7 @@
+##0.0.6
+
+  * Move gem dependencies from gemspec to Gemfile in order to install correctly on JRuby
+
 ##0.0.5
 
   * Bug fix typo '==' instead of '='

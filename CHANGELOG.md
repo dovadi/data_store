@@ -1,3 +1,7 @@
+##0.0.7
+
+  * Partial rollback: sequel and celluloid again part of the gemspec
+
 ##0.0.6
 
   * Move gem dependencies from gemspec to Gemfile in order to install correctly on JRuby

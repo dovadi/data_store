@@ -15,4 +15,7 @@ Gem::Specification.new do |gem|
   gem.name          = 'data_store'
   gem.require_paths = ['lib']
   gem.version       = DataStore::VERSION
+
+  gem.add_dependency('sequel')
+  gem.add_dependency('celluloid')
 end

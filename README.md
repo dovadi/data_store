@@ -22,6 +22,22 @@ Or install it yourself as:
 
 ## Usage
 
+### Install database adapter
+
+Depending on the database you want to use and on which platform it is going to run, add the correct adapter to your projects Gemfile.
+
+For MRI and Rubinius you can choose between:
+
+    gem 'mysql2'
+    gem 'sqlite3'
+    gem 'pg'
+
+For JRuby on of the following:
+
+    gem 'jdbc-mysql'
+    gem 'jdbc-sqlite3'
+    gem 'jdbc-postgres'
+
 ### Configuration
 
     DataStore.configure do |config|

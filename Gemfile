@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'sequel'
-gem 'celluloid'
-
 platforms :jruby do
   gem 'jdbc-mysql'
   gem 'jdbc-sqlite3'

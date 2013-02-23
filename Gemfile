@@ -1,8 +1,21 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in data_store.gemspec
-
 gemspec
+
+gem 'sequel'
+gem 'celluloid'
+
+platforms :jruby do
+  gem 'jdbc-mysql'
+  gem 'jdbc-sqlite3'
+  gem 'jdbc-postgres'
+end
+
+platforms :ruby do
+  gem 'mysql2'
+  gem 'sqlite3'
+  gem 'pg'
+end
 
 group :test, :development do
   gem 'rake'

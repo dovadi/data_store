@@ -1,3 +1,7 @@
+##0.0.8
+
+ * Connect to database in case of a DATABASE_URL environment variable (used with Heroku)
+
 ##0.0.7
 
   * Partial rollback: sequel and celluloid again part of the gemspec

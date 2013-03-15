@@ -29,4 +29,16 @@ class ConnectorTest < Test::Unit::TestCase
 
   end
 
+  context 'Database on Heroku' do
+
+    should 'connect on the base of the DATABASE_URL environment variable in exist' do
+      ENV['DATABASE_URL'] = 'postgres://postgres@localhost/data_store_test'
+      DataStore.configuration.stubs(:database_config_file).returns('')
+      connector = DataStore::Connector.new
+      assert connector.database.inspect.match(ENV['DATABASE_URL'])
+      connector.database.disconnect
+    end
+
+  end
+
 end

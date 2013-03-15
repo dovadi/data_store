@@ -38,6 +38,8 @@ module DataStore
       @database ||= begin
         if RUBY_PLATFORM == 'java'
           Sequel.connect(jdbc_settings)
+        elsif ENV['DATABASE_URL']
+          Sequel.connect(ENV['DATABASE_URL'])
         else
           Sequel.connect(database_settings)
         end

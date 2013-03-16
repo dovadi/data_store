@@ -36,10 +36,10 @@ module DataStore
     # Return the database object to which its connected.
     def database
       @database ||= begin
-        if RUBY_PLATFORM == 'java'
-          Sequel.connect(jdbc_settings)
-        elsif ENV['DATABASE_URL']
+        if ENV['DATABASE_URL']
           Sequel.connect(ENV['DATABASE_URL'])
+        elsif RUBY_PLATFORM == 'java'
+          Sequel.connect(jdbc_settings)
         else
           Sequel.connect(database_settings)
         end

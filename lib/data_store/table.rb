@@ -2,8 +2,6 @@ module DataStore
 
   class Table
 
-    include Celluloid
-
     attr_reader :identifier, :table_index, :original_value
 
     # Initialize the table by passsing an identifier
@@ -68,7 +66,7 @@ module DataStore
     # Import original datapoints, mostly to recreate compression tables
     def import(datapoints)
       datapoints.each do |data|
-        add!(data[0], table_index: 0, created: data[1])
+        add(data[0], table_index: 0, created: data[1])
       end      
     end
 

@@ -3,7 +3,6 @@
 require 'sequel'
 require 'yaml'
 require 'logger'
-require 'celluloid'
 
 $: << File.expand_path('../', __FILE__)
 $: << File.expand_path('../data_store/', __FILE__)

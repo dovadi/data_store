@@ -17,5 +17,4 @@ Gem::Specification.new do |gem|
   gem.version       = DataStore::VERSION
 
   gem.add_dependency('sequel')
-  gem.add_dependency('celluloid')
 end

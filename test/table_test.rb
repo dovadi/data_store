@@ -34,11 +34,6 @@ class TableTest < Test::Unit::TestCase
         assert_equal 1, @table.count
       end
 
-      should 'be able to add a datapoint to the table asynchronously' do
-        @table.add!(120.34)
-        assert_equal 1, @table.count
-      end
-
       should 'return the last datapoint' do
         @table.add(120.34)
         @table.add(120.38)

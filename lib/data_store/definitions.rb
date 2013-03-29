@@ -34,6 +34,7 @@ module DataStore
           column :value, data_type
           column :original_value, data_type if original_value
           column :created, :double
+          index  :created
         end
       end
     end

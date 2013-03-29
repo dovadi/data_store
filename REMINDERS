@@ -6,3 +6,39 @@ Publish gem
 # git push --tags
 # gem build data_store.gemspec 
 # gem push data_store-0.0.1.gem 
+
+
+Issues with Celluloid
+=====================
+
+* With Puma under Rubinius it stalls completely after several hours. Heavy memory leakage
+* With Unicorm and plain Ruby 1.9.3 (so no real multi threading possible because of the GIL),
+  we see the following output when shutting down
+
+    I, [2013-03-25T10:30:04.140928 #26070]  INFO -- : Refreshing Gem list
+    D, [2013-03-25T10:30:04.488992 #24237] DEBUG -- : Terminating 66 actors...
+    D, [2013-03-25T10:30:04.494150 #24237] DEBUG -- : Shutdown completed cleanly
+    D, [2013-03-25T10:30:04.589497 #24244] DEBUG -- : Terminating 150 actors...
+    I, [2013-03-25T10:30:04.590182 #26579]  INFO -- : worker=0 spawned pid=26579
+    D, [2013-03-25T10:30:04.599161 #24244] DEBUG -- : Shutdown completed cleanly
+    I, [2013-03-25T10:30:04.601420 #26579]  INFO -- : worker=0 ready
+    D, [2013-03-25T10:30:04.689328 #24250] DEBUG -- : Terminating 90 actors...
+    I, [2013-03-25T10:30:04.691625 #26585]  INFO -- : worker=1 spawned pid=26585
+    D, [2013-03-25T10:30:04.695504 #24250] DEBUG -- : Shutdown completed cleanly
+    I, [2013-03-25T10:30:04.702978 #26585]  INFO -- : worker=1 ready
+    D, [2013-03-25T10:30:04.789278 #24255] DEBUG -- : Terminating 78 actors...
+    I, [2013-03-25T10:30:04.792916 #26592]  INFO -- : worker=2 spawned pid=26592
+    D, [2013-03-25T10:30:04.795271 #24255] DEBUG -- : Shutdown completed cleanly
+    I, [2013-03-25T10:30:04.805010 #26592]  INFO -- : worker=2 ready
+    I, [2013-03-25T10:30:04.891945 #26070]  INFO -- : master process ready
+    I, [2013-03-25T10:30:04.894110 #26597]  INFO -- : worker=3 spawned pid=26597
+    I, [2013-03-25T10:30:04.904873 #26597]  INFO -- : worker=3 ready
+    I, [2013-03-25T10:30:04.987436 #23737]  INFO -- : reaped #<Process::Status: pid 24237 exit 0> worker=0
+    I, [2013-03-25T10:30:04.987566 #23737]  INFO -- : reaped #<Process::Status: pid 24244 exit 0> worker=1
+    I, [2013-03-25T10:30:04.987642 #23737]  INFO -- : reaped #<Process::Status: pid 24250 exit 0> worker=2
+    I, [2013-03-25T10:30:04.987708 #23737]  INFO -- : reaped #<Process::Status: pid 24255 exit 0> worker=3
+    I, [2013-03-25T10:30:04.987761 #23737]  INFO -- : master complete
+    D, [2013-03-25T10:30:04.989171 #23737] DEBUG -- : Terminating 4 actors...
+    D, [2013-03-25T10:30:04.990623 #23737] DEBUG -- : Shutdown completed cleanly
+
+* So it seems the actor stay alive for some reason 

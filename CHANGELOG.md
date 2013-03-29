@@ -1,3 +1,11 @@
+##0.1.1
+
+  * Add index in table definition
+
+##0.1.0
+
+  * Move away from Celluloid. To many problems in a web application with Puma.
+
 ##0.0.9
 
  * Bug fix: connect to database in case of a DATABASE_URL now works wiht JRuby as well

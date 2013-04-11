@@ -1,3 +1,7 @@
+##0.1.2
+
+  * First timestamp, then value when fetching from data_store
+
 ##0.1.1
 
   * Add index in table definition

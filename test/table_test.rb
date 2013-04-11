@@ -69,8 +69,8 @@ class TableTest < Test::Unit::TestCase
       end
 
       should 'return the datapoints in a given time frame' do
-        assert_equal [10.0, 11.0], @table.fetch(:from => @from, :till => @till).map{|datapoint| datapoint[0]}
-        assert_equal [@from.round, (@from + 10).round], @table.fetch(:from => @from, :till => @till).map{|datapoint| datapoint[1].round}
+        assert_equal [10.0, 11.0], @table.fetch(:from => @from, :till => @till).map{|datapoint| datapoint[1]}
+        assert_equal [@from.round, (@from + 10).round], @table.fetch(:from => @from, :till => @till).map{|datapoint| datapoint[0].round}
       end
 
       should 'return the datapoints from the corresponding time frame' do

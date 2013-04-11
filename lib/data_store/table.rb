@@ -59,7 +59,7 @@ module DataStore
     def fetch(options)
       datapoints = []
       query = parent.db[timeslot(options)].where{created >= options[:from]}.where{created <= options[:till]}.order(:created)
-      query.all.map{|record| datapoints <<[record[:value], record[:created]]}
+      query.all.map{|record| datapoints <<[record[:created], record[:value]]}
       datapoints
     end
 

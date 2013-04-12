@@ -86,7 +86,9 @@ module DataStore
       value = difference_with_previous(value) if type.to_s == 'counter'
       datapoint = { value: value, created: created }
       datapoint[:original_value] = original_value if original_value
-      dataset << datapoint
+      database.transaction do
+        dataset << datapoint  
+      end
       calculate_average_values
     end
 

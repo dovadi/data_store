@@ -9,6 +9,7 @@ $: << File.expand_path('../data_store/', __FILE__)
 
 Sequel.extension :migration
 Sequel::Model.plugin :timestamps, :force=>true, :update_on_create=>true
+Sequel.single_threaded = true
 
 require 'data_store/version'
 require 'data_store/connector'

@@ -1,3 +1,7 @@
+##0.1.3
+
+  * Sequel.single_threaded = true
+
 ##0.1.2
 
   * First timestamp, then value when fetching from data_store

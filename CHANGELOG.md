@@ -1,3 +1,7 @@
+##0.1.5
+
+  * Partial rollback of caching operator, in order to maintain proper calculation of averages.
+
 ##0.1.4
 
   * Remove caching operators in Table, in order to prevent weird errors in production with Sinatra and Unicorn configutation

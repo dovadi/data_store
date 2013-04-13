@@ -17,7 +17,7 @@ module DataStore
 
     # Return a table object enriched with Sequel::Model behaviour
     def model
-      Class.new(Sequel::Model(dataset))
+      @model ||= Class.new(Sequel::Model(dataset))
     end
 
     # Add a new datapoint to the table

@@ -12,12 +12,12 @@ module DataStore
 
     # Return a the corresponding parent class, i.e the settings from the data_stores table
     def parent
-      @parent ||= DataStore::Base.find(identifier: identifier)
+      DataStore::Base.find(identifier: identifier)
     end
 
     # Return a table object enriched with Sequel::Model behaviour
     def model
-      @model ||= Class.new(Sequel::Model(dataset))
+      Class.new(Sequel::Model(dataset))
     end
 
     # Add a new datapoint to the table
@@ -107,7 +107,7 @@ module DataStore
     end
 
     def database
-      @database ||= DataStore::Base.db
+      DataStore::Base.db
     end
 
     def table_name

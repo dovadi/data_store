@@ -1,3 +1,7 @@
+##0.1.4
+
+  * Remove caching operators in Table, in order to prevent weird errors in production with Sinatra and Unicorn configutation
+
 ##0.1.3
 
   * Sequel.single_threaded = true

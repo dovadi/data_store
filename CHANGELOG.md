@@ -1,3 +1,7 @@
+##0.1.6
+
+  * BUG FIX: calculate timeborders on local setttings instead of global settings
+
 ##0.1.5
 
   * Partial rollback of caching operator, in order to maintain proper calculation of averages.

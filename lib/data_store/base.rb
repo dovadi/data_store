@@ -49,7 +49,7 @@ module DataStore
     end
 
     def time_width
-      DataStore.configuration.frequency * DataStore.configuration.maximum_datapoints
+      frequency * maximum_datapoints
     end
 
     private

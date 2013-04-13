@@ -49,8 +49,15 @@ class DataStoreTest < Test::Unit::TestCase
         assert_equal [:ds_1, :ds_1_5, :ds_1_20, :ds_1_60], @record.table_names
       end
 
-      should 'return its time_borders' do
-        assert_equal [8000, 40000, 160000, 480000], @record.time_borders
+      should 'return its time_borders base on frequency and maximum_datapoints' do
+        record = DataStore::Base.create(identifier:         2,
+                                        type:               'counter', 
+                                        name:               'Gas',
+                                        frequency:          5,
+                                        maximum_datapoints: 10,
+                                        description:        'Gas usage',
+                                        compression_schema: [2,4])
+        assert_equal [50, 100, 400], record.time_borders
       end
 
       should 'return its attributes' do

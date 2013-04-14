@@ -1,3 +1,7 @@
+##0.1.7
+
+  * BUG FIX: keep table_index unchanged during calculation of averages
+
 ##0.1.6
 
   * BUG FIX: calculate timeborders on local setttings instead of global settings

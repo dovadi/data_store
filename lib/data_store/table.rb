@@ -15,10 +15,10 @@ module DataStore
       DataStore::Base.find(identifier: identifier)
     end
 
-    # Return a table object enriched with Sequel::Model behaviour
-    def model
-      @model ||= Class.new(Sequel::Model(dataset))
-    end
+    # # Return a table object enriched with Sequel::Model behaviour
+    # def model
+    #   Class.new(Sequel::Model(dataset))
+    # end
 
     # Add a new datapoint to the table
     # In case of a counter type, store the difference between current and last value
@@ -31,13 +31,19 @@ module DataStore
     def add(value, options = {})
       created      = options[:created] || Time.now.utc.to_f
       type         = options[:type] || parent.type
+      original_idx = @table_index
       @table_index = options[:table_index] if options[:table_index]
       push(value, type, created)
+      @table_index = original_idx
+    end
+
+    def model
+      @model ||= Class.new(Sequel::Model(dataset))
     end
 
     # Return the most recent datapoint added
     def last
-      model.order(:created).last
+      model.last
     end
 
     # Return the total number of datapoints in the table
@@ -107,7 +113,7 @@ module DataStore
     end
 
     def database
-      DataStore::Base.db
+      @database ||= DataStore::Base.db
     end
 
     def table_name

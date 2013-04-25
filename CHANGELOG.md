@@ -1,3 +1,7 @@
+##0.1.8
+
+  * Added factor feature to multiply value before adding to the database
+
 ##0.1.7
 
   * BUG FIX: keep table_index unchanged during calculation of averages

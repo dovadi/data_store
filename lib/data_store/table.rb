@@ -28,12 +28,14 @@ module DataStore
     #  * created: timestamp
     #  * type: gauge or counter
     #  * table_index: in which compressed table
+    #  * factor: multiply value with the given factor
     def add(value, options = {})
       created      = options[:created] || Time.now.utc.to_f
       type         = options[:type] || parent.type
+      factor       = options[:factor] || 1
       original_idx = @table_index
       @table_index = options[:table_index] if options[:table_index]
-      push(value, type, created)
+      push(value, type, created, factor)
       @table_index = original_idx
     end
 
@@ -88,9 +90,9 @@ module DataStore
       parent.table_names[index]
     end
 
-    def push(value, type, created)
+    def push(value, type, created, factor)
       value = difference_with_previous(value) if type.to_s == 'counter'
-      datapoint = { value: value, created: created }
+      datapoint = { value: value * factor, created: created }
       datapoint[:original_value] = original_value if original_value
       database.transaction do
         dataset << datapoint  

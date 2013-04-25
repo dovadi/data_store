@@ -46,6 +46,20 @@ class TableTest < Test::Unit::TestCase
       end
     end
 
+
+    context 'adding datapoints with factor' do
+
+      setup do
+        @table.stubs(:calculate_average_values)
+      end
+
+      should 'return the last datapoint' do
+        @table.add(0.092345, factor: 1000)
+        assert_equal 92.345, @table.last.value
+      end
+
+    end
+
     should 'Trigger the average calculator after adding a value' do
       calculator = mock
       #Need to use any_parameters instead of @table because of Celluloid

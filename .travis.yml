@@ -1,14 +1,14 @@
 language: ruby
 rvm:
   - 1.9.3
-  - rbx-19mode
+  - rbx-head-d19
   - jruby-19mode
 
 matrix:
   exclude:
     - rvm: jruby-19mode
       env: DB=sqlite
-    - rvm: rbx-19mode
+    - rvm: rbx-head-d19
       env: DB=sqlite
   allow_failures:
     - jruby-19mode

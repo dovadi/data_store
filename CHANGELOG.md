@@ -1,3 +1,6 @@
+##0.1.9
+  * Very small fix, in order to trigger average calculator in case an extra compression is added in an already existing data store
+
 ##0.1.8
 
   * Added factor feature to multiply value before adding to the database

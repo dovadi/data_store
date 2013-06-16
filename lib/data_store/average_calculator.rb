@@ -14,7 +14,7 @@ module DataStore
     end
 
     # Calculate average value if needed
-    # Average value is store dthrough an add call by a Table object
+    # Average value is store through an add call by a Table object
     # So the average calculator is called again recursively
     def perform
       if calculation_needed?
@@ -36,7 +36,7 @@ module DataStore
         tolerance = DataStore.configuration.frequency_tolerance
         time_difference_since_last_calculation >= (time_resolution - (time_resolution * tolerance)) 
       else
-        dataset.count == base.compression_schema[table_index]
+        dataset.count >= base.compression_schema[table_index]
       end
     end
 

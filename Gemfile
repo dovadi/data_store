@@ -17,7 +17,7 @@ end
 group :test, :development do
   gem 'rake'
   gem 'shoulda'
-  gem 'mocha'
+  gem 'mocha', require: 'mocha/setup'
   gem 'guard'
   gem 'guard-test'
   gem 'rb-fsevent'

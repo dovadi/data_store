@@ -25,7 +25,7 @@ module DataStore
     # For example: "[5,4,3]" => [5,4,3]
     def compression_schema
       value = self.values[:compression_schema]
-      value.gsub(/\[|\]/,'').split(',').map(&:to_i) unless value.nil?
+      value.gsub(/\[|\]/,'').split(',').map(&:to_i) unless value.nil? || value.is_a?(Array)
     end
 
     def table_names

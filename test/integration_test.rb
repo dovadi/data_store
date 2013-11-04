@@ -11,7 +11,7 @@ class IntegrationTest < Test::Unit::TestCase
                                        name:        'Electra',
                                        frequency:    10,
                                        description: 'Actual usage of gas in the home',
-                                       compression_schema: [2,2])
+                                       compression_schema: '[2,2]')
 
       @table = DataStore::Table.new(1)
       @calculator = DataStore::AverageCalculator.new(@table)
@@ -47,7 +47,7 @@ class IntegrationTest < Test::Unit::TestCase
                                        type:        'gauge', 
                                        name:        'Electra',
                                        description: 'Actual usage of electra in the home',
-                                       compression_schema: [2,3])
+                                       compression_schema: '[2,3]')
       @table = DataStore::Table.new(1)
     end
 

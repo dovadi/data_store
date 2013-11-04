@@ -10,7 +10,7 @@ class TableTest < Test::Unit::TestCase
                                        type:        'gauge', 
                                        name:        'Electra',
                                        description: 'Actual usage of electra in the home',
-                                       compression_schema: [5,6,10])
+                                       compression_schema: '[5,6,10]')
       @table = DataStore::Table.new(1)
     end
 
@@ -117,7 +117,7 @@ class TableTest < Test::Unit::TestCase
                                          type:        'gauge', 
                                          name:        'Electra',
                                          description: 'Actual usage of electra in the home',
-                                         compression_schema: [5,6,10])
+                                         compression_schema: '[5,6,10]')
 
         @table = DataStore::Table.new(1, 1)
         @table.stubs(:calculate_average_values)
@@ -142,7 +142,7 @@ class TableTest < Test::Unit::TestCase
                                          type:               'counter', 
                                          name:               'Gas',
                                          description:        'Actual usage of natural gas',
-                                         compression_schema: [])
+                                         compression_schema: '[]')
         @table = DataStore::Table.new(2)
       end
 

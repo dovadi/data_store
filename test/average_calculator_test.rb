@@ -15,7 +15,7 @@ class AverageCalculatorTest < Test::Unit::TestCase
                                        name:        'Electra',
                                        frequency:    10,
                                        description: 'Actual usage of electra in the home',
-                                       compression_schema: [2,2,2])
+                                       compression_schema: '[2,2,2]')
 
       @table = DataStore::Table.new(1)
       @calculator = DataStore::AverageCalculator.new(@table)
@@ -141,7 +141,7 @@ class AverageCalculatorTest < Test::Unit::TestCase
                                        name:        'Electra',
                                        frequency:    10,
                                        description: 'Actual usage of gas in the home',
-                                       compression_schema: [2])
+                                       compression_schema: '[2]')
 
       @table = DataStore::Table.new(1)
       @calculator = DataStore::AverageCalculator.new(@table)

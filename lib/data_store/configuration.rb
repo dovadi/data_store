@@ -9,8 +9,10 @@ module DataStore
     # The database used for storing the data.
     attr_accessor :database
 
-    # The schema is the way avarages of the datapoints is calculated/
-    #  Default: [6,5,3,4,4,3]
+    # The compression schema defines the compression of the data, i.e how the averages of the datapoints are calculated.
+    # Default: '[6,5,3,4,4,3]'
+    # With the default settings: from every 6 datapoints an average value is calculated. From those calculated average values
+    # from every five values a new average value is created (The compression is now 6 * 5 = 30).
     attr_accessor :compression_schema
 
     # The frequency tells how often data entry is done.
@@ -50,7 +52,7 @@ module DataStore
     def initialize
       @prefix                      = 'ds_'
       @database                    = :postgres
-      @compression_schema          = [6,5,3,4,4,3]
+      @compression_schema          = '[6,5,3,4,4,3]'
       @frequency                   = 10
       @maximum_datapoints          = 800
       @data_type                   = :double

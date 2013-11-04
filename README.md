@@ -43,7 +43,7 @@ For JRuby on of the following:
     DataStore.configure do |config|
       config.prefix              = 'ds_'
       config.database            = :mysql
-      config.compression_schema  = [6,5,3]
+      config.compression_schema  = '[6,5,3]'
       config.data_type           = :double
       config.frequency           = 10
       config.maximum_datapoints  = 800

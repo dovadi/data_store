@@ -7,7 +7,7 @@ class ConfigurationTest < Test::Unit::TestCase
     should "provide default values" do
       assert_config_default :prefix,               'ds_'
       assert_config_default :database,             :postgres
-      assert_config_default :compression_schema,   [6,5,3,4,4,3]
+      assert_config_default :compression_schema,   '[6,5,3,4,4,3]'
       assert_config_default :frequency,            10
       assert_config_default :frequency_tolerance,  0.05
       assert_config_default :maximum_datapoints,   800

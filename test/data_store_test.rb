@@ -27,7 +27,7 @@ class DataStoreTest < Test::Unit::TestCase
                                          type:               'gauge', 
                                          name:               'Electra',
                                          description:        'Actual usage of electra in the home',
-                                         compression_schema: [5,4,3])
+                                         compression_schema: '[5,4,3]')
       end
 
       should 'be valid' do
@@ -56,7 +56,7 @@ class DataStoreTest < Test::Unit::TestCase
                                         frequency:          5,
                                         maximum_datapoints: 10,
                                         description:        'Gas usage',
-                                        compression_schema: [2,4])
+                                        compression_schema: '[2,4]')
         assert_equal [50, 100, 400], record.time_borders
       end
 

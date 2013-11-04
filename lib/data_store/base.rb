@@ -22,11 +22,16 @@ module DataStore
     end
 
     # Convert serialized compression schema as a string back into the array object itself.
-    # For example: "[5,4,3]" => [5,4,3]
-    def compression_schema
+    # For example: "(5,4,3)" => [5,4,3]
+     def compression_schema
       value = self.values[:compression_schema]
-      value.gsub(/\[|\]/,'').split(',').map(&:to_i) unless value.nil? || value.is_a?(Array)
-    end
+      if value.nil?
+        value = []
+      else
+        value = value.gsub(/\[|\]|\(|\)/,'').split(',').map(&:to_i) unless value.is_a?(Array)
+      end
+      value
+     end
 
     def table_names
       names  = [table_name]

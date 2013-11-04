@@ -1,3 +1,6 @@
+##0.2.0
+  *Now works with Sequel 4 and tests are verified with Ruby 2.0 instead of 1.9.3
+
 ##0.1.9
   * Very small fix, in order to trigger average calculator in case an extra compression is added in an already existing data store
 

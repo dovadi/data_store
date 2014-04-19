@@ -1,3 +1,6 @@
+##0.2.1
+  *Update to Sequel 4.9.0 and Ruby 2.1.1
+
 ##0.2.0
   *Now works with Sequel 4 and tests are verified with Ruby 2.0 instead of 1.9.3
 

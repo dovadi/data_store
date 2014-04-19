@@ -1,8 +1,11 @@
 # DataStore
 
-<a href='http://travis-ci.org/dovadi/data_store'>
-![http://travis-ci.org/dovadi/data_store](https://secure.travis-ci.org/dovadi/data_store.png)
-</a>
+[![Travis CI](https://secure.travis-ci.org/dovadi/data_store.png)](http://travis-ci.org/dovadi/data_store)
+
+[![Code Climate](https://codeclimate.com/github/dovadi/data_store.png)](https://codeclimate.com/github/dovadi/data_store)
+
+[![Code Climate](https://codeclimate.com/github/dovadi/data_store/coverage.png)](https://codeclimate.com/github/dovadi/data_store)
+
 
 DataStore is designed to store real time data and manage the growth of your dataset by deciding the time period of your historical data. DataStore is tested with Ruby 1.9.3, Rubinius and JRuby and works with three database adapters Sqlite, Mysql and Postgresql.
 

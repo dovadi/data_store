@@ -14,6 +14,8 @@ platforms :ruby do
   gem 'pg'
 end
 
+gem "codeclimate-test-reporter", group: :test, require: nil
+
 group :test, :development do
   gem 'rake'
   gem 'shoulda'

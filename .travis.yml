@@ -18,7 +18,7 @@ branches:
   only:
     - master
 
-script: "bundle exec rake test"
+script: "CODECLIMATE_REPO_TOKEN=ab8d492d1d82e2b594bb4c4d6e712d67bae2ef3e117f0b25fbca7b31b85abc20 bundle exec rake test"
 
 env:
   - DB=postgres

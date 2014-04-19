@@ -16,5 +16,5 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
   gem.version       = DataStore::VERSION
 
-  gem.add_dependency('sequel', '4.4.0')
+  gem.add_dependency('sequel', '4.9.0')
 end

@@ -12,3 +12,11 @@ Rake::TestTask.new(:test) do |test|
 end
 
 task :default => :test
+
+task :console do
+  require 'irb'
+  require 'irb/completion'
+  require 'data_store'
+  ARGV.clear
+  IRB.start
+end

@@ -1,5 +1,7 @@
 # DataStore
 
+[![Gem Version](https://badge.fury.io/rb/data_store.svg)](http://badge.fury.io/rb/data_store)
+
 [![Travis CI](https://secure.travis-ci.org/dovadi/data_store.png)](http://travis-ci.org/dovadi/data_store)
 
 [![Code Climate](https://codeclimate.com/github/dovadi/data_store.png)](https://codeclimate.com/github/dovadi/data_store)

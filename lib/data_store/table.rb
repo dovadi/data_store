@@ -105,11 +105,16 @@ module DataStore
       calculator.perform
     end
 
-    def difference_with_previous(value)
+   def difference_with_previous(value)
       @original_value = value
       unless last.nil?
-        value = value - last[:original_value]
-        last.delete if last[:value] == last[:original_value]
+        begin
+          value = value - last[:original_value]
+          last.delete if last[:value] == last[:original_value]
+        rescue TypeError #It is possible a value is not stored properly the last time so we get a 'TypeError: nil can't be coerced into Float'
+          last.delete
+          value = 0
+        end
       end
       value
     end

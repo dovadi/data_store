@@ -1,3 +1,6 @@
+##0.2.2
+  *BUG FIX: proper handling in case a previous record contains a nil value"
+
 ##0.2.1
   *Update to Sequel 4.9.0 and Ruby 2.1.1
 

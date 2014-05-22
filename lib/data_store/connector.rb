@@ -13,15 +13,13 @@ module DataStore
     # * DateTime    :updated_at
     #
     def create_table!
-      DataStore.create_data_stores.apply(database, :up)
-    rescue Sequel::DatabaseError => e
-      raise e if e.message.include?('FATAL')
+      migrate_table!(:up)
     end
 
     # Drop data_stores table and recreate it
     def reset!
-      drop_table!
-      create_table!
+      migrate_table!(:down)
+      migrate_table!(:up)
       disconnect
     end
 
@@ -76,6 +74,13 @@ module DataStore
     rescue Sequel::DatabaseError => e
       raise e if e.message.include?('FATAL')
     end
+
+    def migrate_table!(direction)
+      DataStore.create_data_stores.apply(database, direction.to_sym)
+    rescue Sequel::DatabaseError => e
+      raise e if e.message.include?('FATAL')
+    end
+
 
     def database_settings
       config_file = DataStore.configuration.database_config_file
